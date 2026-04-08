@@ -27,7 +27,7 @@
     max-width: 480px;
     margin: 0 auto;
   }
- 
+
   /* HEADER */
   .header {
     background: var(--dark);
@@ -43,20 +43,20 @@
   .header-brand { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: var(--chalk); }
   .header-sub { font-size: 10px; color: var(--gris); letter-spacing: 1px; margin-top: 1px; }
   .header-logo { width: 32px; height: 32px; opacity: 0.85; }
- 
+
   /* SCREENS */
   .screen { display: none; padding: 20px; min-height: calc(100vh - 60px); }
   .screen.active { display: block; }
- 
+
   /* TITLES */
   .section-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--marron); margin-bottom: 6px; text-transform: uppercase; }
   .section-line { width: 30px; height: 1px; background: var(--marron); margin-bottom: 20px; }
- 
+
   /* CARDS */
   .card { background: #2A2826; border-radius: 10px; padding: 18px; margin-bottom: 14px; border: 1px solid #3a3633; }
   .card-title { font-size: 12px; font-weight: 700; color: var(--beige); letter-spacing: 1px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
   .card-title .step-badge { background: var(--marron); color: var(--chalk); width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
- 
+
   /* FORM */
   label { display: block; font-size: 11px; font-weight: 600; color: var(--gris); letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 14px; }
   label:first-of-type { margin-top: 0; }
@@ -70,7 +70,7 @@
   select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239B826A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
   select option { background: #2A2826; }
   textarea { resize: none; height: 72px; font-family: inherit; }
- 
+
   /* SEARCH */
   .search-wrap { position: relative; }
   .search-wrap input { padding-left: 38px; }
@@ -81,12 +81,12 @@
   .search-result-item:last-child { border-bottom: none; }
   .search-result-item:active { background: #2a2826; color: var(--beige); }
   .search-result-item em { color: var(--marron); font-style: normal; font-weight: 600; }
- 
+
   /* TOGGLE */
   .toggle-group { display: flex; gap: 10px; }
   .toggle-btn { flex: 1; padding: 13px; border: 1px solid #3a3633; border-radius: 8px; background: #1a1816; color: var(--gris); font-size: 15px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.15s; }
   .toggle-btn.active { background: var(--marron); border-color: var(--marron); color: var(--chalk); }
- 
+
   /* BUTTONS */
   .btn { width: 100%; padding: 16px; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; letter-spacing: 1px; cursor: pointer; transition: all 0.15s; margin-top: 6px; }
   .btn:active { transform: scale(0.98); }
@@ -94,7 +94,7 @@
   .btn-secondary { background: #2A2826; color: var(--beige); border: 1px solid var(--marron); }
   .btn-danger { background: transparent; color: var(--red); border: 1px solid var(--red); }
   .btn-success { background: var(--green); color: white; }
- 
+
   /* EMPLOYEE ROWS */
   .empleado-row { background: #1a1816; border: 1px solid #3a3633; border-radius: 8px; padding: 14px; margin-bottom: 10px; position: relative; border-left: 3px solid var(--marron); }
   .empleado-nombre { font-size: 14px; font-weight: 600; color: var(--chalk); margin-bottom: 4px; padding-right: 30px; }
@@ -102,10 +102,10 @@
   .empleado-total { font-size: 13px; color: var(--marron); margin-top: 4px; font-weight: 600; }
   .empleado-delete { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--gris); font-size: 18px; cursor: pointer; padding: 4px; }
   .empleado-delete:active { color: var(--red); }
- 
+
   /* ADD EMPLOYEE FORM */
   .add-emp-form { background: #232120; border: 1px dashed var(--marron); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
- 
+
   /* RESUMEN */
   .resumen-evento { background: #2A2826; border-radius: 10px; padding: 16px; margin-bottom: 14px; }
   .resumen-evento-nombre { font-size: 16px; font-weight: 700; color: var(--chalk); margin-bottom: 4px; }
@@ -114,59 +114,59 @@
   .resumen-empleado-info { font-size: 13px; color: var(--chalk); }
   .resumen-empleado-meta { font-size: 11px; color: var(--gris); margin-top: 2px; }
   .resumen-empleado-total { font-size: 14px; font-weight: 700; color: var(--beige); }
- 
+
   /* SUCCESS */
   .success-icon { font-size: 56px; text-align: center; margin: 30px 0 16px; }
   .success-title { font-size: 22px; font-weight: 700; text-align: center; color: var(--chalk); margin-bottom: 8px; }
   .success-sub { font-size: 14px; color: var(--gris); text-align: center; margin-bottom: 30px; line-height: 1.5; }
- 
+
   /* PROGRESS */
   .progress-bar { height: 3px; background: #3a3633; border-radius: 2px; margin-bottom: 24px; overflow: hidden; }
   .progress-fill { height: 100%; background: var(--marron); border-radius: 2px; transition: width 0.3s ease; }
- 
+
   /* TOAST */
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--marron); color: var(--chalk); padding: 12px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; white-space: nowrap; transition: transform 0.3s ease; z-index: 999; box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
   .toast.show { transform: translateX(-50%) translateY(0); }
- 
+
   /* DIVIDER */
   .divider { height: 1px; background: #3a3633; margin: 20px 0; }
- 
+
   /* TABS */
   .tabs { display: flex; background: #141210; border-radius: 8px; padding: 4px; margin-bottom: 20px; }
   .tab { flex: 1; padding: 10px; text-align: center; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; border-radius: 6px; cursor: pointer; color: var(--gris); transition: all 0.15s; }
   .tab.active { background: var(--marron); color: var(--chalk); }
- 
+
   /* BADGE */
   .badge { display: inline-block; background: var(--marron); color: var(--chalk); font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
- 
+
   /* SPINNER */
   .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
   @keyframes spin { to { transform: rotate(360deg); } }
- 
+
   /* LOADING EVENTOS */
   .loading-eventos { text-align: center; padding: 16px; color: var(--gris); font-size: 13px; }
   .eventos-error { background: #2a1a1a; border: 1px solid var(--red); border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #ff8a80; margin-bottom: 10px; }
- 
+
   /* SAVED */
   .saved-badge { background: #1a1816; border: 1px solid #3a3633; border-radius: 8px; padding: 14px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
   .saved-badge-info { flex: 1; }
   .saved-badge-nombre { font-size: 14px; font-weight: 600; color: var(--chalk); }
   .saved-badge-meta { font-size: 11px; color: var(--gris); margin-top: 2px; }
- 
+
   .empty-state { text-align: center; padding: 40px 20px; color: var(--gris); font-size: 14px; line-height: 1.6; }
   .empty-state .emoji { font-size: 36px; margin-bottom: 12px; display: block; }
- 
+
   /* EVENTO INFO BOX */
   .evento-info-box { background: #232120; border: 1px solid var(--marron); border-radius: 8px; padding: 12px 14px; margin-top: 8px; display: none; }
   .evento-info-box .evento-fecha { font-size: 12px; color: var(--gris); }
   .evento-info-box .evento-nombre { font-size: 14px; font-weight: 600; color: var(--beige); margin-top: 2px; }
- 
+
   .config-info { background: #232120; border: 1px solid #3a3633; border-radius: 8px; padding: 16px; font-size: 13px; color: var(--gris); line-height: 1.6; margin-bottom: 14px; }
   .config-info strong { color: var(--beige); }
 </style>
 </head>
 <body>
- 
+
 <div class="header">
   <div>
     <div class="header-brand">LA FONDIATTA</div>
@@ -178,9 +178,9 @@
     <path d="M18 46 Q40 40 62 46 Q52 56 40 58 Q28 56 18 46Z" stroke="#E1D9C8" stroke-width="2" fill="none"/>
   </svg>
 </div>
- 
+
 <div class="toast" id="toast"></div>
- 
+
 <!-- ══════════════════════════════════════ -->
 <!-- HOME                                  -->
 <!-- ══════════════════════════════════════ -->
@@ -189,26 +189,26 @@
     <div class="section-title">Bienvenido</div>
     <div class="section-line"></div>
   </div>
- 
+
   <div class="tabs">
     <div class="tab active" onclick="switchTab('nuevo', this)">Nuevo evento</div>
     <div class="tab" onclick="switchTab('guardados', this)">Guardados <span class="badge" id="badge-count">0</span></div>
   </div>
- 
+
   <!-- Tab Nuevo -->
   <div id="tab-nuevo">
     <div class="card">
       <div class="card-title"><span class="step-badge">1</span> Datos del evento</div>
- 
+
       <label>Encargado/a</label>
-      <select id="home-encargado">
+      <select id="home-encargado" onchange="cargarEventos()">
         <option value="">— Seleccioná —</option>
         <option>Guillermina</option>
         <option>Gaston</option>
         <option>Camila</option>
         <option>Denisse</option>
       </select>
- 
+
       <label>Evento</label>
       <div id="eventos-loading" class="loading-eventos">
         <span class="spinner"></span> Cargando eventos...
@@ -220,27 +220,27 @@
       <select id="home-evento-select" style="display:none;" onchange="onEventoSelect(this.value)">
         <option value="">— Seleccioná un evento —</option>
       </select>
- 
+
       <!-- Evento info -->
       <div class="evento-info-box" id="evento-info-box">
         <div class="evento-fecha" id="evento-info-fecha"></div>
         <div class="evento-nombre" id="evento-info-nombre"></div>
       </div>
- 
+
       <!-- Campo manual si no está en la lista -->
       <div style="margin-top:10px;">
         <div style="font-size:11px; color:var(--gris); margin-bottom:6px;">¿No está en la lista? Escribilo manualmente:</div>
         <input type="text" id="home-evento-manual" placeholder="Nombre del evento..." autocomplete="off" oninput="onManualEvento(this.value)">
       </div>
- 
+
       <label>Fecha del evento</label>
       <input type="date" id="home-fecha">
     </div>
- 
+
     <button class="btn btn-primary" onclick="iniciarEvento()">COMENZAR CARGA →</button>
     <button class="btn btn-secondary" style="margin-top:10px;" onclick="recargarEventos()">↻ Recargar eventos</button>
   </div>
- 
+
   <!-- Tab Guardados -->
   <div id="tab-guardados" style="display:none;">
     <div id="list-guardados">
@@ -251,21 +251,21 @@
     </div>
   </div>
 </div>
- 
+
 <!-- ══════════════════════════════════════ -->
 <!-- CARGA DE EMPLEADOS                    -->
 <!-- ══════════════════════════════════════ -->
 <div class="screen" id="screen-carga">
   <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
- 
+
   <div class="section-title" id="carga-evento-label">EVENTO</div>
   <div class="section-line"></div>
- 
+
   <div id="lista-empleados"></div>
- 
+
   <div class="add-emp-form">
     <div style="font-size:12px; color:var(--gris); font-weight:700; letter-spacing:1px; margin-bottom:14px;">+ AGREGAR EMPLEADO</div>
- 
+
     <label>Empleado</label>
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
@@ -274,7 +274,7 @@
       <div class="search-results" id="search-results"></div>
     </div>
     <input type="hidden" id="emp-selected">
- 
+
     <label>Función</label>
     <select id="emp-funcion">
       <option value="">— Seleccioná —</option>
@@ -285,7 +285,7 @@
       <option>Bartender</option>
       <option>Subencargado/a</option>
     </select>
- 
+
     <label>Horas trabajadas</label>
     <select id="emp-horas">
       <option value="">— Seleccioná —</option>
@@ -294,13 +294,13 @@
       <option>9</option><option>10</option><option>11</option><option>12</option>
       <option>14</option><option>16</option>
     </select>
- 
+
     <label>¿Hizo carga/descarga?</label>
     <div class="toggle-group">
       <div class="toggle-btn active" id="cd-no" onclick="setCargaDesc('No')">No</div>
       <div class="toggle-btn" id="cd-si" onclick="setCargaDesc('Sí')">Sí</div>
     </div>
- 
+
     <div id="hs-cd-wrap" style="display:none; margin-top:14px;">
       <label style="margin-top:0;">Horas de carga/descarga</label>
       <select id="emp-hs-cd">
@@ -308,18 +308,18 @@
         <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
       </select>
     </div>
- 
+
     <label>Observaciones (opcional)</label>
     <textarea id="emp-obs" placeholder="Ej: Comida personal $5.000"></textarea>
- 
+
     <button class="btn btn-secondary" style="margin-top:16px;" onclick="agregarEmpleado()">+ AGREGAR A LA LISTA</button>
   </div>
- 
+
   <div class="divider"></div>
   <button class="btn btn-primary" onclick="irAResumen()">VER RESUMEN →</button>
   <button class="btn btn-danger" style="margin-top:10px;" onclick="cancelarEvento()">Cancelar</button>
 </div>
- 
+
 <!-- ══════════════════════════════════════ -->
 <!-- RESUMEN                               -->
 <!-- ══════════════════════════════════════ -->
@@ -331,7 +331,7 @@
   <button class="btn btn-success" id="btn-enviar" onclick="enviarDatos()">✓ CONFIRMAR Y ENVIAR</button>
   <button class="btn btn-secondary" style="margin-top:10px;" onclick="showScreen('carga')">← VOLVER A EDITAR</button>
 </div>
- 
+
 <!-- ══════════════════════════════════════ -->
 <!-- ÉXITO                                 -->
 <!-- ══════════════════════════════════════ -->
@@ -339,7 +339,7 @@
   <div class="success-icon">✅</div>
   <div class="success-title">¡Enviado!</div>
   <div class="success-sub" id="exito-msg"></div>
- 
+
   <div id="exito-texto-wrap" style="display:none;">
     <div class="config-info">
       <strong>Copiá este texto y pegalo en la planilla:</strong>
@@ -347,35 +347,38 @@
     </div>
     <button class="btn btn-secondary" style="margin-top:0;" onclick="copiarTexto()">📋 Copiar texto</button>
   </div>
- 
+
   <div class="divider"></div>
   <button class="btn btn-primary" style="margin-top:10px;" onclick="nuevoEvento()">+ NUEVO EVENTO</button>
 </div>
- 
+
 <script>
 // ══════════════════════════════════════════════════════
 // CONFIGURACIÓN
 // ══════════════════════════════════════════════════════
-const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxx8ZUGbMnvfwkLLIhWFJZKUlIE9lL7nGVxMw1TSy1rz_iteWUfbiaMN25I7ZoV4A9jBQ/exec";
- 
+const WEBHOOKS = {
+  "Guillermina": "https://script.google.com/macros/s/AKfycbxx8ZUGbMnvfwkLLIhWFJZKUlIE9lL7nGVxMw1TSy1rz_iteWUfbiaMN25I7ZoV4A9jBQ/exec",
+  "Gaston":      "https://script.google.com/macros/s/AKfycbzBMX9hPh481IRwD7d0yIHAQAk_WCdXspcr6IjpVv4rP_ESGvfDojflqYCrpb7wN_zlUA/exec"
+};
+
 const EMPLEADOS = ["Abigail Sanchez","Aldana Milagros López","Alicia Gisel Sosa","Anabela Beatriz Dominguez","Andrea Edith Romero","Andrés Escudero","Angel Emanuel Gauna","Antonella Alejandra Sanabria","Antonella Camejo","Antonella Coppola","Antonio Rubén Suarez","Ariadna Jaimes","Arnaldo Andres Roa","Ayelen Milagros Faundez Muñoz","Bautista Garcia Yañez de Anchorena","Beltrán Casá","Brenda Barrera","Brisa Gabriela Anahi Reynoso","Brisa Silva","Camila Antonella Sofio","Camila Monserrat Miranda Caballero","Camila Nahir Prezel","Candela Soledad Amaya","Carlos Maximiliano Sofio","Carmen Noemí Salmi Ibarra","Celeste López","Celina Ruiz","Cesar Agustin Peñaloza","Cinthia Macarena leguiza","Cintia Beatriz Paredes","Cintia Carolina Batalla","Claudia Noemí Bareiro","Daiana Candela Fernandez","Daiana Fiorella Ceballos","Daiana Gisela Contreras","Daiana Rocycela Sosa","Dalma Yanella Amaya","Damaris Melina Leonardi","Daniel Alpino","Daniela Beatriz Bareiro","David Nieto","Delicia Prezel","Denisse Luna López Espinosa","Eduardo Maximiliano Arce","Elisa Pertiné","Eloisa Fini Carrieri","Emanuel Antonio Barrera","Emiliano Cimuro","Esteban Pascual Mendoza","Estefania Ramirez","Evelin Jenifer Nieto","Ezequiel Torija","Fabián Orlando Ruiz","Federico Pagalday","Fernando Fabián Mendoza","Florencia Ramona Toledo","Francisco María Páez de la Torre","Franco Daniel Soto","Franco Ezequiel Velázquez","Franco Iván Fernández","Gastón Luna","Gerardo Fernández","Gisela Analía Schinca","Gonzalo Fabián Muñoz","Guido Nicolas Maximiliano","Guillermina puglia","Génesis Candela Carnales","Ian Torres","Iara Ludmila Sánchez","Ignacio Bautista Colombo","Isabel María Dorado","Isabella Carratelli","Ivana mariquena Prieto","Jacqueline Florencia Serapio","Jazmin Vanoni","Jessica Stefanía Esquivel","Johana Castillo","Jonathan Brian Toledo","Josefina Dorado","Josefina Roggero","José Antonio Barrera","Juan Francisco Constantino","Juan Pablo Quinci","Juana Martin","Julia De La Arena","Kevin Alfaro","Lautaro Maldonado","Leandro Batalla","Leandro Nahuel Ledesma","Leandro Zalazar","Leila Belén Rivero","Leonel Jesús Arroyo","Luca Godoy","Lucas Castro","Lucas Matías Bisconti","Lucia jael Saldaño Mastrolorenzo","Ludmila Insaurralde","Luis Ariel Castro","Luz Candela Rojas","Luz Constanza Caceres Roa","Luz Federica Abigail Prieto","Maia Selena Rivero","Maia Valentina Escobar","Malena Alanis Darán","Malena Scarioni","Malvina Soledad Nieto","Marcelo Alberto Molina","Margarita Correa","Maria Angelica Fatti","Mariana Galeano","Marina Elizabeth Cajal","Mario Ezequiel Medina","Marisol Velázquez","Martina Pereyra","María Josefina Pesavento","Matias Javier Williams","Matias Vera","Matías Viacava","Maximiliano Fernandez","Maximiliano Gabriel Fernández","Mayra Lorena Espíndola","Melani Arriscal","Micaela Abigail Gomez","Milagros Lucero","Morena Ailen Sanchez","Nancy Beatriz Sosa","Nayla Saffores","Nazarena Morena Feliz","Nicole Berger","Noelia Agustina Paniagua","Nuevo empleado","Oriana Belén Dahir","Rafael Andrés Pérez","Ricardo Emanuel Prezel","Roberto Cayetano Cammarano","Rocio Daiana Martinez","Rocio Galván","Rodrigo Fernández Duarte","Romina Jeanette Lopez","Román Alexis Ibáñez","Santiago Israel Sánchez","Santiago Schneider","Selene Prezel","Sharon Cinthia Cajal","Silvana Beatriz Cimino","Silvana Fiorella Ceballos","Valeria Araceli Elizabeth Gauna","Vanina Ailen Mansilla","Verónica Estigarribia Escobar","Waltera Gastón Ciro Barrera","Yamil Abigail Sanchez","Yamila Melany Acevedo","Yanina Soledad Ramírez","Zaira Macarena Nieto","Zenón Lobo Marquez","Zoe Tatiana Prezel"];
- 
+
 const TARIFAS = {
   "Encargado/a": 7500, "Mozas Subencargado/a": 5500, "Parrillero": 5500,
   "Mozo": 5000, "Bartender": 5500, "Subencargado/a": 6300
 };
 const TARIFA_CD = 5000;
- 
+
 const ZONAS_EMPLEADOS = {"Gisela Analía schinca": "Moreno", "Abigail Sanchez": "Moreno", "Aldana Milagros López": "Moreno", "Alicia Gisel Sosa": "Moreno", "Anabela Beatriz Dominguez": "Moreno", "Andrea Edith Romero": "Capital", "Antonella Alejandra Sanabria": "Moreno", "Antonella Camejo": "Moreno", "Antonella Coppola": "Moreno", "Antonio Rubén Suarez": "Otras Zonas", "Ariadna Jaimes": "Moreno", "Arnaldo Andres Roa": "Zona Norte", "Ayelen Milagros Faundez Muñoz": "Moreno", "Bautista Garcia Yañez de Anchorena": "Capital", "Beltrán Casá": "Capital", "Brenda Barrera": "Moreno", "Brisa Gabriela Anahi Reynoso": "Otras Zonas", "Brisa Silva": "Otras Zonas", "Camila Antonella Sofio": "Capital", "Camila Monserrat Miranda Caballero": "Moreno", "Camila Nahir Prezel": "Moreno", "Candela Soledad Amaya": "Moreno", "Carlos Maximiliano Sofio": "Capital", "Martina Pereyra": "Capital", "Carmen Noemí Salmi Ibarra": "Moreno", "Celeste López": "Moreno", "Celina Ruiz": "Moreno", "Cesar Agustin Peñaloza": "Otras Zonas", "Cinthia Macarena leguiza": "Moreno", "Cintia Beatriz Paredes": "Moreno", "Cintia Carolina Batalla": "Moreno", "Claudia Noemí Bareiro": "Moreno", "Daiana Candela Fernandez": "Otras Zonas", "Daiana Fiorella Ceballos": "Moreno", "Daiana Gisela Contreras": "Moreno", "Daiana Rocycela Sosa": "Moreno", "Dalma Yanella Amaya": "Moreno", "Damaris Melina Leonardi": "Moreno", "Daniel Alpino": "Otras Zonas", "Daniela Beatriz Bareiro": "Moreno", "David Nieto": "Moreno", "Delicia Prezel": "Moreno", "Denisse Luna López Espinosa": "Capital", "Eduardo Maximiliano Arce": "Otras Zonas", "Elisa Pertiné": "Capital", "Eloisa Fini Carrieri": "Capital", "Emanuel Antonio Barrera": "Moreno", "Emiliano Cimuro": "Otras Zonas", "Estefania Ramirez": "Moreno", "Ezequiel Torija": "Capital", "Fabián Orlando Ruiz": "Moreno", "Federico Pagalday": "Moreno", "Fernando Fabián Mendoza": "Otras Zonas", "Florencia Ramona Toledo": "Moreno", "Francisco María Páez de la Torre": "Capital", "Franco Daniel Soto": "Otras Zonas", "Franco Ezequiel Velázquez": "Otras Zonas", "Franco Iván Fernández": "Moreno", "Gastón Luna": "Otras Zonas", "Génesis Candela Carnales": "Otras Zonas", "Gerardo Fernández": "Otras Zonas", "Gonzalo Fabián Muñoz": "Moreno", "Guido Nicolas Maximiliano": "Otras Zonas", "Guillermina puglia": "Moreno", "Ian Torres": "Otras Zonas", "Iara Ludmila Sánchez": "Moreno", "Ignacio Bautista Colombo": "Otras Zonas", "Isabel María Dorado": "Otras Zonas", "Isabella Carratelli": "Otras Zonas", "Ivana mariquena Prieto": "Otras Zonas", "Jacqueline Florencia Serapio": "Otras Zonas", "Jazmin Vanoni": "Otras Zonas", "Jessica Stefanía Esquivel": "Moreno", "Johana Castillo": "Moreno", "Jonathan Brian Toledo": "Moreno", "José Antonio Barrera": "Moreno", "Josefina Dorado": "Otras Zonas", "Juan Francisco Constantino": "Otras Zonas", "Juan Pablo Quinci": "Otras Zonas", "Juana Martin": "Otras Zonas", "Julia De La Arena": "Otras Zonas", "Kevin Alfaro": "Zona Norte", "Lautaro Maldonado": "Otras Zonas", "Leandro Batalla": "Moreno", "Leandro Nahuel Ledesma": "Moreno", "Leandro Zalazar": "Otras Zonas", "Leila Belén Rivero": "Otras Zonas", "Leonel Jesús Arroyo": "Otras Zonas", "Luca Godoy": "Moreno", "Lucas Castro": "Moreno", "Lucas Matías Bisconti": "Otras Zonas", "Lucia jael Saldaño Mastrolorenzo": "Capital", "Ludmila Insaurralde": "Moreno", "Luis Ariel Castro": "Otras Zonas", "Luz Candela Rojas": "Otras Zonas", "Luz Constanza Caceres Roa": "Otras Zonas", "Luz Federica Abigail Prieto": "Moreno", "Maia Selena Rivero": "Moreno", "Maia Valentina Escobar": "Moreno", "Malena Alanis Darán": "Moreno", "Malena Scarioni": "Moreno", "Malvina Soledad Nieto": "Moreno", "Marcelo Alberto Molina": "Otras Zonas", "Margarita Correa": "Otras Zonas", "Maria Angelica Fatti": "Capital", "María Josefina Pesavento": "Otras Zonas", "Mariana Galeano": "Otras Zonas", "Marina Elizabeth Cajal": "Moreno", "Mario Ezequiel Medina": "Zona Norte", "Matias Javier Williams": "Otras Zonas", "Matias Vera": "Zona Norte", "Matías Viacava": "Otras Zonas", "Maximiliano Fernandez": "Zona Norte", "Mayra Lorena Espíndola": "Moreno", "Melani Arriscal": "Moreno", "Micaela Abigail Gomez": "Moreno", "Milagros Lucero": "Moreno", "Morena Ailen Sanchez": "Moreno", "Nancy Beatriz Sosa": "Moreno", "Nayla Saffores": "Moreno", "Nazarena Morena Feliz": "Otras Zonas", "Nicole Berger": "Otras Zonas", "Noelia Agustina Paniagua": "Moreno", "Oriana Belén Dahir": "Moreno", "Rafael Andrés Pérez": "Otras Zonas", "Ricardo Emanuel Prezel": "Moreno", "Roberto Cayetano Cammarano": "Otras Zonas", "Rocio Galván": "Otras Zonas", "Román Alexis Ibáñez": "Moreno", "Romina Jeanette Lopez": "Moreno", "Santiago Schneider": "Otras Zonas", "Selene Prezel": "Moreno", "Sharon Cinthia Cajal": "Moreno", "Silvana Beatriz Cimino": "Otras Zonas", "Silvana Fiorella Ceballos": "Moreno", "Valeria Araceli Elizabeth Gauna": "Moreno", "Vanina Ailen Mansilla": "Moreno", "Verónica Estigarribia Escobar": "Otras Zonas", "Waltera Gastón Ciro Barrera": "Moreno", "Yamil Abigail Sanchez": "Moreno", "Yamila Melany Acevedo": "Moreno", "Yanina Soledad Ramírez": "Moreno", "Zaira Macarena Nieto": "Moreno", "Zenón Lobo Marquez": "Otras Zonas", "Zoe Tatiana Prezel": "Moreno", "Evelin Jenifer Nieto": "Capital", "Esteban Pascual Mendoza": "Otras Zonas", "Marisol Velázquez": "Moreno", "Angel Emanuel Gauna": "Moreno", "Santiago Israel Sánchez": "Moreno", "Gisela Analía Schinca": "Moreno", "Rodrigo Fernández Duarte": "Otras Zonas", "Josefina Roggero": "Capital", "Andrés Escudero": "Capital", "Rocio Daiana Martinez": "Otras Zonas", "Maximiliano Gabriel Fernández": "Otras Zonas", "Nuevo empleado": "Otras Zonas"};
- 
+
 const VIATICOS = {
   "Moreno": 8000,
   "Capital": 5000,
   "Zona Norte": 4000,
   "Otras Zonas": 4000
 };
- 
- 
+
+
 // ══════════════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════════════
@@ -384,7 +387,7 @@ let empleadosCargados = [];
 let cargaDescState = 'No';
 let eventosCache = [];
 let eventoSeleccionado = null; // { nombre, fecha }
- 
+
 // ══════════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════════
@@ -394,7 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateBadge();
   cargarEventos();
 });
- 
+
 // ══════════════════════════════════════════════════════
 // CARGAR EVENTOS DESDE GOOGLE SHEETS
 // ══════════════════════════════════════════════════════
@@ -402,16 +405,18 @@ async function cargarEventos() {
   document.getElementById('eventos-loading').style.display = 'block';
   document.getElementById('eventos-error').style.display = 'none';
   document.getElementById('home-evento-select').style.display = 'none';
- 
+
   try {
-    const res = await fetch(WEBHOOK_URL, { method: 'GET' });
+    const encargado = document.getElementById('home-encargado').value;
+    const url = WEBHOOKS[encargado] || Object.values(WEBHOOKS)[0];
+    const res = await fetch(url, { method: 'GET' });
     const data = await res.json();
- 
+
     if (!data.ok || !data.eventos) throw new Error('Sin datos');
- 
+
     eventosCache = data.eventos;
     poblarSelectEventos(data.eventos);
- 
+
   } catch(e) {
     document.getElementById('eventos-loading').style.display = 'none';
     document.getElementById('eventos-error').style.display = 'block';
@@ -419,7 +424,7 @@ async function cargarEventos() {
     document.getElementById('home-evento-select').style.display = 'block';
   }
 }
- 
+
 function recargarEventos() {
   eventoSeleccionado = null;
   document.getElementById('evento-info-box').style.display = 'none';
@@ -428,12 +433,12 @@ function recargarEventos() {
   cargarEventos();
   showToast('↻ Recargando eventos...');
 }
- 
+
 function poblarSelectEventos(eventos) {
   document.getElementById('eventos-loading').style.display = 'none';
   const select = document.getElementById('home-evento-select');
   select.innerHTML = '<option value="">— Seleccioná un evento —</option>';
- 
+
   if (eventos.length === 0) {
     select.innerHTML += '<option disabled>No hay eventos cargados en la planilla</option>';
   } else {
@@ -442,10 +447,10 @@ function poblarSelectEventos(eventos) {
       select.innerHTML += `<option value="${i}">${label}</option>`;
     });
   }
- 
+
   select.style.display = 'block';
 }
- 
+
 function onEventoSelect(val) {
   const box = document.getElementById('evento-info-box');
   if (val === '') {
@@ -460,7 +465,7 @@ function onEventoSelect(val) {
   document.getElementById('evento-info-fecha').textContent = ev.fecha || '';
   document.getElementById('evento-info-nombre').textContent = ev.nombre;
   box.style.display = 'block';
- 
+
   // Auto-completar fecha si la tenemos
   if (ev.fecha) {
     const parts = ev.fecha.split('/');
@@ -470,7 +475,7 @@ function onEventoSelect(val) {
     }
   }
 }
- 
+
 function onManualEvento(val) {
   if (val.trim()) {
     // Si escriben manual, limpiar el select
@@ -479,7 +484,7 @@ function onManualEvento(val) {
     eventoSeleccionado = null;
   }
 }
- 
+
 // ══════════════════════════════════════════════════════
 // NAVEGACIÓN
 // ══════════════════════════════════════════════════════
@@ -488,7 +493,7 @@ function showScreen(id) {
   document.getElementById('screen-' + id).classList.add('active');
   window.scrollTo(0, 0);
 }
- 
+
 function switchTab(tab, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
@@ -496,7 +501,7 @@ function switchTab(tab, el) {
   document.getElementById('tab-guardados').style.display = tab === 'guardados' ? 'block' : 'none';
   if (tab === 'guardados') renderGuardados();
 }
- 
+
 // ══════════════════════════════════════════════════════
 // INICIAR EVENTO
 // ══════════════════════════════════════════════════════
@@ -505,36 +510,36 @@ function iniciarEvento() {
   const fecha = document.getElementById('home-fecha').value;
   const manual = document.getElementById('home-evento-manual').value.trim();
   const nombreEvento = eventoSeleccionado ? eventoSeleccionado.nombre : manual;
- 
+
   if (!encargado) return showToast('⚠️ Seleccioná el encargado/a');
   if (!nombreEvento) return showToast('⚠️ Seleccioná o escribí el evento');
   if (!fecha) return showToast('⚠️ Ingresá la fecha');
- 
+
   currentEvento = { fecha, evento: nombreEvento, encargado };
   empleadosCargados = [];
   cargaDescState = 'No';
- 
+
   document.getElementById('carga-evento-label').textContent = nombreEvento.length > 40
     ? nombreEvento.substring(0, 40) + '...'
     : nombreEvento.toUpperCase();
- 
+
   renderEmpleados();
   resetEmpForm();
   showScreen('carga');
 }
- 
+
 // ══════════════════════════════════════════════════════
 // BÚSQUEDA DE EMPLEADOS
 // ══════════════════════════════════════════════════════
 function searchEmpleado(query) {
   const results = document.getElementById('search-results');
   if (!query || query.length < 1) { results.classList.remove('open'); return; }
- 
+
   const q = query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   const matches = EMPLEADOS.filter(e =>
     e.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q)
   ).slice(0, 8);
- 
+
   if (matches.length === 0) {
     results.innerHTML = '<div class="search-result-item" style="color:var(--gris)">Sin resultados — podés escribir el nombre completo</div>';
   } else {
@@ -545,18 +550,18 @@ function searchEmpleado(query) {
   }
   results.classList.add('open');
 }
- 
+
 function selectEmpleado(nombre) {
   document.getElementById('emp-search').value = nombre;
   document.getElementById('emp-selected').value = nombre;
   document.getElementById('search-results').classList.remove('open');
 }
- 
+
 document.addEventListener('click', e => {
   if (!e.target.closest('.search-wrap'))
     document.getElementById('search-results').classList.remove('open');
 });
- 
+
 // ══════════════════════════════════════════════════════
 // CARGA/DESCARGA
 // ══════════════════════════════════════════════════════
@@ -566,7 +571,7 @@ function setCargaDesc(val) {
   document.getElementById('cd-si').classList.toggle('active', val === 'Sí');
   document.getElementById('hs-cd-wrap').style.display = val === 'Sí' ? 'block' : 'none';
 }
- 
+
 // ══════════════════════════════════════════════════════
 // AGREGAR EMPLEADO
 // ══════════════════════════════════════════════════════
@@ -576,30 +581,30 @@ function agregarEmpleado() {
   const horas = document.getElementById('emp-horas').value;
   const obs = document.getElementById('emp-obs').value.trim();
   const hsCD = cargaDescState === 'Sí' ? document.getElementById('emp-hs-cd').value : '';
- 
+
   if (!nombre) return showToast('⚠️ Seleccioná un empleado');
   if (!funcion) return showToast('⚠️ Seleccioná la función');
   if (!horas) return showToast('⚠️ Seleccioná las horas');
   if (cargaDescState === 'Sí' && !hsCD) return showToast('⚠️ Ingresá las horas de C/D');
- 
+
   const tarifaHora = TARIFAS[funcion] || 0;
   const subtotalHoras = parseFloat(horas) * tarifaHora;
   const adicionalCD = cargaDescState === 'Sí' ? parseFloat(hsCD || 0) * TARIFA_CD : 0;
   const zona = ZONAS_EMPLEADOS[nombre] || 'Otras Zonas';
   const viatico = VIATICOS[zona] || 4000;
   const total = subtotalHoras + adicionalCD + viatico;
- 
+
   empleadosCargados.push({ nombre, funcion, horas: parseFloat(horas), cargaDesc: cargaDescState, hsCD: hsCD ? parseFloat(hsCD) : null, obs, zona, subtotalHoras, adicionalCD, viatico, total });
   renderEmpleados();
   resetEmpForm();
   showToast(`✓ ${nombre.split(' ')[0]} agregado`);
 }
- 
+
 function eliminarEmpleado(idx) {
   empleadosCargados.splice(idx, 1);
   renderEmpleados();
 }
- 
+
 function renderEmpleados() {
   const container = document.getElementById('lista-empleados');
   if (empleadosCargados.length === 0) {
@@ -615,7 +620,7 @@ function renderEmpleados() {
     </div>
   `).join('');
 }
- 
+
 function resetEmpForm() {
   document.getElementById('emp-search').value = '';
   document.getElementById('emp-selected').value = '';
@@ -625,7 +630,7 @@ function resetEmpForm() {
   document.getElementById('emp-hs-cd').value = '';
   setCargaDesc('No');
 }
- 
+
 // ══════════════════════════════════════════════════════
 // RESUMEN
 // ══════════════════════════════════════════════════════
@@ -657,7 +662,7 @@ function irAResumen() {
   `;
   showScreen('resumen');
 }
- 
+
 // ══════════════════════════════════════════════════════
 // ENVIAR
 // ══════════════════════════════════════════════════════
@@ -665,7 +670,7 @@ async function enviarDatos() {
   const btn = document.getElementById('btn-enviar');
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>Enviando...';
- 
+
   const payload = {
     fecha: currentEvento.fecha,
     evento: currentEvento.evento,
@@ -683,14 +688,15 @@ async function enviarDatos() {
       obs: e.obs
     }))
   };
- 
+
   // Guardar localmente siempre
   let saved = JSON.parse(localStorage.getItem('lf_eventos') || '[]');
   saved.unshift({ ...payload, savedAt: new Date().toISOString() });
   localStorage.setItem('lf_eventos', JSON.stringify(saved.slice(0, 50)));
- 
+
   try {
-    await fetch(WEBHOOK_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    const webhookUrl = WEBHOOKS[currentEvento.encargado] || Object.values(WEBHOOKS)[0];
+    await fetch(webhookUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     document.getElementById('exito-msg').textContent = `${empleadosCargados.length} filas enviadas correctamente a Google Sheets.`;
     document.getElementById('exito-texto-wrap').style.display = 'none';
   } catch(e) {
@@ -699,18 +705,18 @@ async function enviarDatos() {
     document.getElementById('exito-texto').textContent = 'Fecha\tEvento\tEncargado\tEmpleado\tFunción\tHoras\tC/D\tHs C/D\tObs\n' + lines.join('\n');
     document.getElementById('exito-texto-wrap').style.display = 'block';
   }
- 
+
   btn.disabled = false;
   btn.innerHTML = '✓ CONFIRMAR Y ENVIAR';
   updateBadge();
   showScreen('exito');
 }
- 
+
 function copiarTexto() {
   navigator.clipboard.writeText(document.getElementById('exito-texto').textContent)
     .then(() => showToast('✓ Copiado'));
 }
- 
+
 // ══════════════════════════════════════════════════════
 // GUARDADOS
 // ══════════════════════════════════════════════════════
@@ -731,19 +737,19 @@ function renderGuardados() {
     </div>
   `).join('');
 }
- 
+
 function updateBadge() {
   const saved = JSON.parse(localStorage.getItem('lf_eventos') || '[]');
   document.getElementById('badge-count').textContent = saved.length;
 }
- 
+
 // ══════════════════════════════════════════════════════
 // MISC
 // ══════════════════════════════════════════════════════
 function cancelarEvento() {
   if (confirm('¿Cancelar la carga? Se perderán los datos.')) showScreen('home');
 }
- 
+
 function nuevoEvento() {
   currentEvento = null;
   empleadosCargados = [];
@@ -756,16 +762,16 @@ function nuevoEvento() {
   showScreen('home');
   cargarEventos();
 }
- 
+
 function formatNum(n) { return Math.round(n).toLocaleString('es-AR'); }
- 
+
 function formatFecha(dateStr) {
   if (!dateStr) return '';
   const [y, m, d] = dateStr.split('-');
   const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   return `${parseInt(d)} ${meses[parseInt(m)-1]} ${y}`;
 }
- 
+
 let toastTimer;
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -777,4 +783,3 @@ function showToast(msg) {
 </script>
 </body>
 </html>
- 
