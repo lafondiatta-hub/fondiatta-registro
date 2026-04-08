@@ -17,11 +17,8 @@
     --dark: #141210;
     --green: #4CAF50;
     --red: #E53935;
-    --orange: #FB8C00;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background: var(--carbon);
@@ -30,8 +27,8 @@
     max-width: 480px;
     margin: 0 auto;
   }
-
-  /* ── HEADER ── */
+ 
+  /* HEADER */
   .header {
     background: var(--dark);
     padding: 16px 20px 12px;
@@ -46,372 +43,130 @@
   .header-brand { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: var(--chalk); }
   .header-sub { font-size: 10px; color: var(--gris); letter-spacing: 1px; margin-top: 1px; }
   .header-logo { width: 32px; height: 32px; opacity: 0.85; }
-
-  /* ── SCREENS ── */
+ 
+  /* SCREENS */
   .screen { display: none; padding: 20px; min-height: calc(100vh - 60px); }
   .screen.active { display: block; }
-
-  /* ── SECTION TITLE ── */
-  .section-title {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: var(--marron);
-    margin-bottom: 6px;
-    text-transform: uppercase;
-  }
-  .section-line {
-    width: 30px; height: 1px;
-    background: var(--marron);
-    margin-bottom: 20px;
-  }
-
-  /* ── CARDS ── */
-  .card {
-    background: #2A2826;
-    border-radius: 10px;
-    padding: 18px;
-    margin-bottom: 14px;
-    border: 1px solid #3a3633;
-  }
-  .card-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--beige);
-    letter-spacing: 1px;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .card-title .step-badge {
-    background: var(--marron);
-    color: var(--chalk);
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 10px; font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  /* ── FORM ELEMENTS ── */
-  label {
-    display: block;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--gris);
-    letter-spacing: 0.5px;
-    margin-bottom: 6px;
-    margin-top: 14px;
-  }
+ 
+  /* TITLES */
+  .section-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--marron); margin-bottom: 6px; text-transform: uppercase; }
+  .section-line { width: 30px; height: 1px; background: var(--marron); margin-bottom: 20px; }
+ 
+  /* CARDS */
+  .card { background: #2A2826; border-radius: 10px; padding: 18px; margin-bottom: 14px; border: 1px solid #3a3633; }
+  .card-title { font-size: 12px; font-weight: 700; color: var(--beige); letter-spacing: 1px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .card-title .step-badge { background: var(--marron); color: var(--chalk); width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+ 
+  /* FORM */
+  label { display: block; font-size: 11px; font-weight: 600; color: var(--gris); letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 14px; }
   label:first-of-type { margin-top: 0; }
-
   input[type="text"], input[type="date"], input[type="number"], select, textarea {
-    width: 100%;
-    background: #1a1816;
-    border: 1px solid #3a3633;
-    border-radius: 8px;
-    padding: 13px 14px;
-    color: var(--chalk);
-    font-size: 15px;
-    -webkit-appearance: none;
-    appearance: none;
-    outline: none;
-    transition: border-color 0.2s;
+    width: 100%; background: #1a1816; border: 1px solid #3a3633; border-radius: 8px;
+    padding: 13px 14px; color: var(--chalk); font-size: 15px;
+    -webkit-appearance: none; appearance: none; outline: none; transition: border-color 0.2s;
   }
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--marron);
-  }
+  input:focus, select:focus, textarea:focus { border-color: var(--marron); }
   input[type="date"] { color-scheme: dark; }
   select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239B826A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
   select option { background: #2A2826; }
-
-  /* Search input */
+  textarea { resize: none; height: 72px; font-family: inherit; }
+ 
+  /* SEARCH */
   .search-wrap { position: relative; }
   .search-wrap input { padding-left: 38px; }
   .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--gris); font-size: 16px; pointer-events: none; }
-  .search-results {
-    background: #1a1816;
-    border: 1px solid var(--marron);
-    border-top: none;
-    border-radius: 0 0 8px 8px;
-    max-height: 200px;
-    overflow-y: auto;
-    display: none;
-  }
+  .search-results { background: #1a1816; border: 1px solid var(--marron); border-top: none; border-radius: 0 0 8px 8px; max-height: 200px; overflow-y: auto; display: none; }
   .search-results.open { display: block; }
-  .search-result-item {
-    padding: 12px 14px;
-    font-size: 14px;
-    cursor: pointer;
-    border-bottom: 1px solid #2a2826;
-    color: var(--chalk);
-  }
+  .search-result-item { padding: 12px 14px; font-size: 14px; cursor: pointer; border-bottom: 1px solid #2a2826; color: var(--chalk); }
   .search-result-item:last-child { border-bottom: none; }
-  .search-result-item:active, .search-result-item.highlighted { background: #2a2826; color: var(--beige); }
+  .search-result-item:active { background: #2a2826; color: var(--beige); }
   .search-result-item em { color: var(--marron); font-style: normal; font-weight: 600; }
-
-  /* Toggle buttons */
-  .toggle-group { display: flex; gap: 10px; margin-top: 0; }
-  .toggle-btn {
-    flex: 1;
-    padding: 13px;
-    border: 1px solid #3a3633;
-    border-radius: 8px;
-    background: #1a1816;
-    color: var(--gris);
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.15s;
-  }
-  .toggle-btn.active {
-    background: var(--marron);
-    border-color: var(--marron);
-    color: var(--chalk);
-  }
-
-  /* ── BUTTONS ── */
-  .btn {
-    width: 100%;
-    padding: 16px;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: all 0.15s;
-    margin-top: 6px;
-  }
+ 
+  /* TOGGLE */
+  .toggle-group { display: flex; gap: 10px; }
+  .toggle-btn { flex: 1; padding: 13px; border: 1px solid #3a3633; border-radius: 8px; background: #1a1816; color: var(--gris); font-size: 15px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.15s; }
+  .toggle-btn.active { background: var(--marron); border-color: var(--marron); color: var(--chalk); }
+ 
+  /* BUTTONS */
+  .btn { width: 100%; padding: 16px; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; letter-spacing: 1px; cursor: pointer; transition: all 0.15s; margin-top: 6px; }
   .btn:active { transform: scale(0.98); }
   .btn-primary { background: var(--beige); color: var(--carbon); }
   .btn-secondary { background: #2A2826; color: var(--beige); border: 1px solid var(--marron); }
   .btn-danger { background: transparent; color: var(--red); border: 1px solid var(--red); }
   .btn-success { background: var(--green); color: white; }
-  .btn-sm {
-    width: auto;
-    padding: 8px 16px;
-    font-size: 12px;
-    margin-top: 0;
-    border-radius: 6px;
-  }
-
-  /* ── EMPLOYEE ROWS ── */
-  .empleado-row {
-    background: #1a1816;
-    border: 1px solid #3a3633;
-    border-radius: 8px;
-    padding: 14px;
-    margin-bottom: 10px;
-    position: relative;
-  }
-  .empleado-row.complete { border-left: 3px solid var(--marron); }
-  .empleado-nombre {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--chalk);
-    margin-bottom: 4px;
-    padding-right: 30px;
-  }
-  .empleado-detalle {
-    font-size: 12px;
-    color: var(--gris);
-  }
-  .empleado-delete {
-    position: absolute;
-    top: 12px; right: 12px;
-    background: none; border: none;
-    color: var(--gris); font-size: 18px;
-    cursor: pointer; padding: 4px;
-  }
+ 
+  /* EMPLOYEE ROWS */
+  .empleado-row { background: #1a1816; border: 1px solid #3a3633; border-radius: 8px; padding: 14px; margin-bottom: 10px; position: relative; border-left: 3px solid var(--marron); }
+  .empleado-nombre { font-size: 14px; font-weight: 600; color: var(--chalk); margin-bottom: 4px; padding-right: 30px; }
+  .empleado-detalle { font-size: 12px; color: var(--gris); }
+  .empleado-total { font-size: 13px; color: var(--marron); margin-top: 4px; font-weight: 600; }
+  .empleado-delete { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--gris); font-size: 18px; cursor: pointer; padding: 4px; }
   .empleado-delete:active { color: var(--red); }
-
-  /* ── ADD EMPLOYEE FORM ── */
-  .add-emp-form {
-    background: #232120;
-    border: 1px dashed var(--marron);
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 14px;
-  }
-
-  /* ── RESUMEN ── */
-  .resumen-evento {
-    background: #2A2826;
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 14px;
-  }
-  .resumen-evento-nombre {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--chalk);
-    margin-bottom: 4px;
-  }
-  .resumen-evento-meta {
-    font-size: 12px;
-    color: var(--gris);
-    margin-bottom: 12px;
-  }
-  .resumen-empleado {
-    padding: 8px 0;
-    border-top: 1px solid #3a3633;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+ 
+  /* ADD EMPLOYEE FORM */
+  .add-emp-form { background: #232120; border: 1px dashed var(--marron); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+ 
+  /* RESUMEN */
+  .resumen-evento { background: #2A2826; border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+  .resumen-evento-nombre { font-size: 16px; font-weight: 700; color: var(--chalk); margin-bottom: 4px; }
+  .resumen-evento-meta { font-size: 12px; color: var(--gris); margin-bottom: 12px; }
+  .resumen-empleado { padding: 8px 0; border-top: 1px solid #3a3633; display: flex; justify-content: space-between; align-items: center; }
   .resumen-empleado-info { font-size: 13px; color: var(--chalk); }
   .resumen-empleado-meta { font-size: 11px; color: var(--gris); margin-top: 2px; }
   .resumen-empleado-total { font-size: 14px; font-weight: 700; color: var(--beige); }
-
-  /* ── SUCCESS ── */
+ 
+  /* SUCCESS */
   .success-icon { font-size: 56px; text-align: center; margin: 30px 0 16px; }
   .success-title { font-size: 22px; font-weight: 700; text-align: center; color: var(--chalk); margin-bottom: 8px; }
   .success-sub { font-size: 14px; color: var(--gris); text-align: center; margin-bottom: 30px; line-height: 1.5; }
-
-  /* ── PROGRESS BAR ── */
-  .progress-bar {
-    height: 3px;
-    background: #3a3633;
-    border-radius: 2px;
-    margin-bottom: 24px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: var(--marron);
-    border-radius: 2px;
-    transition: width 0.3s ease;
-  }
-
-  /* ── TOAST ── */
-  .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--marron);
-    color: var(--chalk);
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: transform 0.3s ease;
-    z-index: 999;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-  }
+ 
+  /* PROGRESS */
+  .progress-bar { height: 3px; background: #3a3633; border-radius: 2px; margin-bottom: 24px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--marron); border-radius: 2px; transition: width 0.3s ease; }
+ 
+  /* TOAST */
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--marron); color: var(--chalk); padding: 12px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; white-space: nowrap; transition: transform 0.3s ease; z-index: 999; box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
   .toast.show { transform: translateX(-50%) translateY(0); }
-
-  /* ── DIVIDER ── */
+ 
+  /* DIVIDER */
   .divider { height: 1px; background: #3a3633; margin: 20px 0; }
-
-  /* ── TABS ── */
-  .tabs {
-    display: flex;
-    background: #141210;
-    border-radius: 8px;
-    padding: 4px;
-    margin-bottom: 20px;
-  }
-  .tab {
-    flex: 1;
-    padding: 10px;
-    text-align: center;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    border-radius: 6px;
-    cursor: pointer;
-    color: var(--gris);
-    transition: all 0.15s;
-  }
+ 
+  /* TABS */
+  .tabs { display: flex; background: #141210; border-radius: 8px; padding: 4px; margin-bottom: 20px; }
+  .tab { flex: 1; padding: 10px; text-align: center; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; border-radius: 6px; cursor: pointer; color: var(--gris); transition: all 0.15s; }
   .tab.active { background: var(--marron); color: var(--chalk); }
-
-  /* ── BADGE ── */
-  .badge {
-    display: inline-block;
-    background: var(--marron);
-    color: var(--chalk);
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 10px;
-    margin-left: 6px;
-    vertical-align: middle;
-  }
-
-  /* ── SPINNER ── */
-  .spinner {
-    display: inline-block;
-    width: 18px; height: 18px;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    vertical-align: middle;
-    margin-right: 8px;
-  }
+ 
+  /* BADGE */
+  .badge { display: inline-block; background: var(--marron); color: var(--chalk); font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
+ 
+  /* SPINNER */
+  .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ── OBSERVACIONES ── */
-  textarea { resize: none; height: 72px; font-family: inherit; }
-
-  /* ── SAVED LIST ── */
-  .saved-badge {
-    background: #1a1816;
-    border: 1px solid #3a3633;
-    border-radius: 8px;
-    padding: 14px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+ 
+  /* LOADING EVENTOS */
+  .loading-eventos { text-align: center; padding: 16px; color: var(--gris); font-size: 13px; }
+  .eventos-error { background: #2a1a1a; border: 1px solid var(--red); border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #ff8a80; margin-bottom: 10px; }
+ 
+  /* SAVED */
+  .saved-badge { background: #1a1816; border: 1px solid #3a3633; border-radius: 8px; padding: 14px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
   .saved-badge-info { flex: 1; }
   .saved-badge-nombre { font-size: 14px; font-weight: 600; color: var(--chalk); }
   .saved-badge-meta { font-size: 11px; color: var(--gris); margin-top: 2px; }
-  .saved-badge-status { font-size: 20px; margin-left: 10px; }
-
-  .empty-state {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--gris);
-    font-size: 14px;
-    line-height: 1.6;
-  }
+ 
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--gris); font-size: 14px; line-height: 1.6; }
   .empty-state .emoji { font-size: 36px; margin-bottom: 12px; display: block; }
-
-  /* Config screen */
-  .config-info {
-    background: #232120;
-    border: 1px solid #3a3633;
-    border-radius: 8px;
-    padding: 16px;
-    font-size: 13px;
-    color: var(--gris);
-    line-height: 1.6;
-    margin-bottom: 14px;
-  }
+ 
+  /* EVENTO INFO BOX */
+  .evento-info-box { background: #232120; border: 1px solid var(--marron); border-radius: 8px; padding: 12px 14px; margin-top: 8px; display: none; }
+  .evento-info-box .evento-fecha { font-size: 12px; color: var(--gris); }
+  .evento-info-box .evento-nombre { font-size: 14px; font-weight: 600; color: var(--beige); margin-top: 2px; }
+ 
+  .config-info { background: #232120; border: 1px solid #3a3633; border-radius: 8px; padding: 16px; font-size: 13px; color: var(--gris); line-height: 1.6; margin-bottom: 14px; }
   .config-info strong { color: var(--beige); }
-  .config-info code {
-    display: block;
-    background: #1a1816;
-    border-radius: 4px;
-    padding: 10px;
-    font-size: 11px;
-    color: var(--marron);
-    margin-top: 8px;
-    word-break: break-all;
-    line-height: 1.5;
-  }
 </style>
 </head>
 <body>
-
-<!-- HEADER -->
+ 
 <div class="header">
   <div>
     <div class="header-brand">LA FONDIATTA</div>
@@ -423,36 +178,28 @@
     <path d="M18 46 Q40 40 62 46 Q52 56 40 58 Q28 56 18 46Z" stroke="#E1D9C8" stroke-width="2" fill="none"/>
   </svg>
 </div>
-
-<!-- TOAST -->
+ 
 <div class="toast" id="toast"></div>
-
-<!-- ════════════════════════════════════════ -->
-<!-- SCREEN: HOME                            -->
-<!-- ════════════════════════════════════════ -->
+ 
+<!-- ══════════════════════════════════════ -->
+<!-- HOME                                  -->
+<!-- ══════════════════════════════════════ -->
 <div class="screen active" id="screen-home">
   <div style="margin-bottom:24px; margin-top:8px;">
     <div class="section-title">Bienvenido</div>
     <div class="section-line"></div>
   </div>
-
+ 
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('nuevo')">Nuevo evento</div>
-    <div class="tab" onclick="switchTab('guardados')">Guardados <span class="badge" id="badge-count">0</span></div>
-    <div class="tab" onclick="switchTab('config')">Config</div>
+    <div class="tab active" onclick="switchTab('nuevo', this)">Nuevo evento</div>
+    <div class="tab" onclick="switchTab('guardados', this)">Guardados <span class="badge" id="badge-count">0</span></div>
   </div>
-
-  <!-- Tab: Nuevo -->
+ 
+  <!-- Tab Nuevo -->
   <div id="tab-nuevo">
     <div class="card">
       <div class="card-title"><span class="step-badge">1</span> Datos del evento</div>
-
-      <label>Fecha del evento</label>
-      <input type="date" id="home-fecha">
-
-      <label>Nombre del evento</label>
-      <input type="text" id="home-evento" placeholder="Ej: Evento Danone — Desayuno" autocomplete="off">
-
+ 
       <label>Encargado/a</label>
       <select id="home-encargado">
         <option value="">— Seleccioná —</option>
@@ -461,76 +208,73 @@
         <option>Camila</option>
         <option>Denisse</option>
       </select>
+ 
+      <label>Evento</label>
+      <div id="eventos-loading" class="loading-eventos">
+        <span class="spinner"></span> Cargando eventos...
+      </div>
+      <div id="eventos-error" class="eventos-error" style="display:none;">
+        ⚠️ No se pudieron cargar los eventos. <br>
+        <span style="font-size:12px;">Verificá tu conexión o usá el campo manual abajo.</span>
+      </div>
+      <select id="home-evento-select" style="display:none;" onchange="onEventoSelect(this.value)">
+        <option value="">— Seleccioná un evento —</option>
+      </select>
+ 
+      <!-- Evento info -->
+      <div class="evento-info-box" id="evento-info-box">
+        <div class="evento-fecha" id="evento-info-fecha"></div>
+        <div class="evento-nombre" id="evento-info-nombre"></div>
+      </div>
+ 
+      <!-- Campo manual si no está en la lista -->
+      <div style="margin-top:10px;">
+        <div style="font-size:11px; color:var(--gris); margin-bottom:6px;">¿No está en la lista? Escribilo manualmente:</div>
+        <input type="text" id="home-evento-manual" placeholder="Nombre del evento..." autocomplete="off" oninput="onManualEvento(this.value)">
+      </div>
+ 
+      <label>Fecha del evento</label>
+      <input type="date" id="home-fecha">
     </div>
-
+ 
     <button class="btn btn-primary" onclick="iniciarEvento()">COMENZAR CARGA →</button>
+    <button class="btn btn-secondary" style="margin-top:10px;" onclick="recargarEventos()">↻ Recargar eventos</button>
   </div>
-
-  <!-- Tab: Guardados -->
+ 
+  <!-- Tab Guardados -->
   <div id="tab-guardados" style="display:none;">
     <div id="list-guardados">
       <div class="empty-state">
         <span class="emoji">📋</span>
-        Todavía no hay eventos guardados.<br>Empezá cargando uno nuevo.
+        Todavía no hay eventos guardados.
       </div>
     </div>
-  </div>
-
-  <!-- Tab: Config -->
-  <div id="tab-config" style="display:none;">
-    <div class="section-title">Conexión con Google Sheets</div>
-    <div class="section-line"></div>
-
-    <div class="config-info">
-      <strong>Cómo conectar esta app a tu planilla:</strong><br><br>
-      1. Abrí tu Google Sheet<br>
-      2. Andá a <strong>Extensiones → Apps Script</strong><br>
-      3. Pegá el script de webhook (ver abajo)<br>
-      4. Hacé clic en <strong>Implementar → Nueva implementación → App web</strong><br>
-      5. Copiá la URL que te da y pegála acá abajo
-      <code>// El script de Apps Script está disponible<br>// como archivo separado en este mismo ZIP</code>
-    </div>
-
-    <label>URL del webhook (Google Apps Script)</label>
-    <input type="text" id="config-webhook" placeholder="https://script.google.com/macros/s/..." style="font-size:12px;">
-
-    <div style="margin-top:8px; margin-bottom:16px;">
-      <div style="font-size:11px; color:var(--gris); line-height:1.5;">
-        Sin webhook configurado, los datos se guardan localmente en el celular y podés exportarlos como texto para copiar a la planilla manualmente.
-      </div>
-    </div>
-
-    <button class="btn btn-secondary" onclick="saveWebhook()">GUARDAR URL</button>
-    <button class="btn btn-danger" style="margin-top:10px;" onclick="clearAll()">BORRAR TODOS LOS DATOS</button>
   </div>
 </div>
-
-<!-- ════════════════════════════════════════ -->
-<!-- SCREEN: CARGA DE EMPLEADOS              -->
-<!-- ════════════════════════════════════════ -->
+ 
+<!-- ══════════════════════════════════════ -->
+<!-- CARGA DE EMPLEADOS                    -->
+<!-- ══════════════════════════════════════ -->
 <div class="screen" id="screen-carga">
-  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:50%"></div></div>
-
+  <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+ 
   <div class="section-title" id="carga-evento-label">EVENTO</div>
   <div class="section-line"></div>
-
-  <!-- Empleados cargados -->
+ 
   <div id="lista-empleados"></div>
-
-  <!-- Form agregar empleado -->
-  <div class="add-emp-form" id="add-emp-form">
-    <div class="card-title" style="margin-bottom:14px; font-size:12px; color:var(--gris);">
-      + AGREGAR EMPLEADO
-    </div>
-
+ 
+  <div class="add-emp-form">
+    <div style="font-size:12px; color:var(--gris); font-weight:700; letter-spacing:1px; margin-bottom:14px;">+ AGREGAR EMPLEADO</div>
+ 
     <label>Empleado</label>
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input type="text" id="emp-search" placeholder="Escribí el nombre..." autocomplete="off" oninput="searchEmpleado(this.value)" onfocus="searchEmpleado(this.value)">
+      <input type="text" id="emp-search" placeholder="Escribí el nombre..." autocomplete="off"
+        oninput="searchEmpleado(this.value)" onfocus="searchEmpleado(this.value)">
       <div class="search-results" id="search-results"></div>
     </div>
     <input type="hidden" id="emp-selected">
-
+ 
     <label>Función</label>
     <select id="emp-funcion">
       <option value="">— Seleccioná —</option>
@@ -541,7 +285,7 @@
       <option>Bartender</option>
       <option>Subencargado/a</option>
     </select>
-
+ 
     <label>Horas trabajadas</label>
     <select id="emp-horas">
       <option value="">— Seleccioná —</option>
@@ -550,232 +294,316 @@
       <option>9</option><option>10</option><option>11</option><option>12</option>
       <option>14</option><option>16</option>
     </select>
-
+ 
     <label>¿Hizo carga/descarga?</label>
     <div class="toggle-group">
-      <div class="toggle-btn" id="cd-no" onclick="setCargaDesc('No')">No</div>
+      <div class="toggle-btn active" id="cd-no" onclick="setCargaDesc('No')">No</div>
       <div class="toggle-btn" id="cd-si" onclick="setCargaDesc('Sí')">Sí</div>
     </div>
-
-    <div id="hs-cd-wrap" style="display:none;">
-      <label>Horas de carga/descarga</label>
+ 
+    <div id="hs-cd-wrap" style="display:none; margin-top:14px;">
+      <label style="margin-top:0;">Horas de carga/descarga</label>
       <select id="emp-hs-cd">
         <option value="">— Seleccioná —</option>
         <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
       </select>
     </div>
-
+ 
     <label>Observaciones (opcional)</label>
     <textarea id="emp-obs" placeholder="Ej: Comida personal $5.000"></textarea>
-
+ 
     <button class="btn btn-secondary" style="margin-top:16px;" onclick="agregarEmpleado()">+ AGREGAR A LA LISTA</button>
   </div>
-
+ 
   <div class="divider"></div>
   <button class="btn btn-primary" onclick="irAResumen()">VER RESUMEN →</button>
-  <button class="btn btn-danger" style="margin-top:10px;" onclick="cancelarEvento()">Cancelar evento</button>
+  <button class="btn btn-danger" style="margin-top:10px;" onclick="cancelarEvento()">Cancelar</button>
 </div>
-
-<!-- ════════════════════════════════════════ -->
-<!-- SCREEN: RESUMEN Y ENVÍO                 -->
-<!-- ════════════════════════════════════════ -->
+ 
+<!-- ══════════════════════════════════════ -->
+<!-- RESUMEN                               -->
+<!-- ══════════════════════════════════════ -->
 <div class="screen" id="screen-resumen">
   <div class="section-title">Revisá antes de enviar</div>
   <div class="section-line"></div>
-
   <div id="resumen-contenido"></div>
-
   <div class="divider"></div>
   <button class="btn btn-success" id="btn-enviar" onclick="enviarDatos()">✓ CONFIRMAR Y ENVIAR</button>
-  <button class="btn btn-secondary" style="margin-top:10px;" onclick="volverACarga()">← VOLVER A EDITAR</button>
+  <button class="btn btn-secondary" style="margin-top:10px;" onclick="showScreen('carga')">← VOLVER A EDITAR</button>
 </div>
-
-<!-- ════════════════════════════════════════ -->
-<!-- SCREEN: ÉXITO                           -->
-<!-- ════════════════════════════════════════ -->
+ 
+<!-- ══════════════════════════════════════ -->
+<!-- ÉXITO                                 -->
+<!-- ══════════════════════════════════════ -->
 <div class="screen" id="screen-exito">
   <div class="success-icon">✅</div>
   <div class="success-title">¡Enviado!</div>
-  <div class="success-sub" id="exito-msg">Los datos del evento fueron registrados correctamente.</div>
-
+  <div class="success-sub" id="exito-msg"></div>
+ 
   <div id="exito-texto-wrap" style="display:none;">
-    <div class="config-info" style="margin-bottom:14px;">
+    <div class="config-info">
       <strong>Copiá este texto y pegalo en la planilla:</strong>
-      <code id="exito-texto" style="white-space:pre-wrap; word-break:break-word;"></code>
+      <pre id="exito-texto" style="margin-top:8px; font-size:11px; color:var(--marron); white-space:pre-wrap; word-break:break-word; background:#1a1816; padding:10px; border-radius:4px;"></pre>
     </div>
-    <button class="btn btn-secondary btn-sm" onclick="copiarTexto()">📋 Copiar texto</button>
+    <button class="btn btn-secondary" style="margin-top:0;" onclick="copiarTexto()">📋 Copiar texto</button>
   </div>
-
+ 
   <div class="divider"></div>
   <button class="btn btn-primary" style="margin-top:10px;" onclick="nuevoEvento()">+ NUEVO EVENTO</button>
 </div>
-
+ 
 <script>
-// ══════════════════════════════════════════════════════════════
-// DATOS
-// ══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// CONFIGURACIÓN
+// ══════════════════════════════════════════════════════
+const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzJ44udqig0Itm7QQV2-0BEoSC-ArPsKqiySNEOcMZjJOBq9DglY72Wg1blNlsifmIEdQ/exec";
+ 
 const EMPLEADOS = ["Abigail Sanchez","Aldana Milagros López","Alicia Gisel Sosa","Anabela Beatriz Dominguez","Andrea Edith Romero","Andrés Escudero","Angel Emanuel Gauna","Antonella Alejandra Sanabria","Antonella Camejo","Antonella Coppola","Antonio Rubén Suarez","Ariadna Jaimes","Arnaldo Andres Roa","Ayelen Milagros Faundez Muñoz","Bautista Garcia Yañez de Anchorena","Beltrán Casá","Brenda Barrera","Brisa Gabriela Anahi Reynoso","Brisa Silva","Camila Antonella Sofio","Camila Monserrat Miranda Caballero","Camila Nahir Prezel","Candela Soledad Amaya","Carlos Maximiliano Sofio","Carmen Noemí Salmi Ibarra","Celeste López","Celina Ruiz","Cesar Agustin Peñaloza","Cinthia Macarena leguiza","Cintia Beatriz Paredes","Cintia Carolina Batalla","Claudia Noemí Bareiro","Daiana Candela Fernandez","Daiana Fiorella Ceballos","Daiana Gisela Contreras","Daiana Rocycela Sosa","Dalma Yanella Amaya","Damaris Melina Leonardi","Daniel Alpino","Daniela Beatriz Bareiro","David Nieto","Delicia Prezel","Denisse Luna López Espinosa","Eduardo Maximiliano Arce","Elisa Pertiné","Eloisa Fini Carrieri","Emanuel Antonio Barrera","Emiliano Cimuro","Esteban Pascual Mendoza","Estefania Ramirez","Evelin Jenifer Nieto","Ezequiel Torija","Fabián Orlando Ruiz","Federico Pagalday","Fernando Fabián Mendoza","Florencia Ramona Toledo","Francisco María Páez de la Torre","Franco Daniel Soto","Franco Ezequiel Velázquez","Franco Iván Fernández","Gastón Luna","Gerardo Fernández","Gisela Analía Schinca","Gonzalo Fabián Muñoz","Guido Nicolas Maximiliano","Guillermina puglia","Génesis Candela Carnales","Ian Torres","Iara Ludmila Sánchez","Ignacio Bautista Colombo","Isabel María Dorado","Isabella Carratelli","Ivana mariquena Prieto","Jacqueline Florencia Serapio","Jazmin Vanoni","Jessica Stefanía Esquivel","Johana Castillo","Jonathan Brian Toledo","Josefina Dorado","Josefina Roggero","José Antonio Barrera","Juan Francisco Constantino","Juan Pablo Quinci","Juana Martin","Julia De La Arena","Kevin Alfaro","Lautaro Maldonado","Leandro Batalla","Leandro Nahuel Ledesma","Leandro Zalazar","Leila Belén Rivero","Leonel Jesús Arroyo","Luca Godoy","Lucas Castro","Lucas Matías Bisconti","Lucia jael Saldaño Mastrolorenzo","Ludmila Insaurralde","Luis Ariel Castro","Luz Candela Rojas","Luz Constanza Caceres Roa","Luz Federica Abigail Prieto","Maia Selena Rivero","Maia Valentina Escobar","Malena Alanis Darán","Malena Scarioni","Malvina Soledad Nieto","Marcelo Alberto Molina","Margarita Correa","Maria Angelica Fatti","Mariana Galeano","Marina Elizabeth Cajal","Mario Ezequiel Medina","Marisol Velázquez","Martina Pereyra","María Josefina Pesavento","Matias Javier Williams","Matias Vera","Matías Viacava","Maximiliano Fernandez","Maximiliano Gabriel Fernández","Mayra Lorena Espíndola","Melani Arriscal","Micaela Abigail Gomez","Milagros Lucero","Morena Ailen Sanchez","Nancy Beatriz Sosa","Nayla Saffores","Nazarena Morena Feliz","Nicole Berger","Noelia Agustina Paniagua","Nuevo empleado","Oriana Belén Dahir","Rafael Andrés Pérez","Ricardo Emanuel Prezel","Roberto Cayetano Cammarano","Rocio Daiana Martinez","Rocio Galván","Rodrigo Fernández Duarte","Romina Jeanette Lopez","Román Alexis Ibáñez","Santiago Israel Sánchez","Santiago Schneider","Selene Prezel","Sharon Cinthia Cajal","Silvana Beatriz Cimino","Silvana Fiorella Ceballos","Valeria Araceli Elizabeth Gauna","Vanina Ailen Mansilla","Verónica Estigarribia Escobar","Waltera Gastón Ciro Barrera","Yamil Abigail Sanchez","Yamila Melany Acevedo","Yanina Soledad Ramírez","Zaira Macarena Nieto","Zenón Lobo Marquez","Zoe Tatiana Prezel"];
-
+ 
 const TARIFAS = {
-  "Encargado/a": 7500,
-  "Mozas Subencargado/a": 5500,
-  "Parrillero": 5500,
-  "Mozo": 5000,
-  "Bartender": 5500,
-  "Subencargado/a": 6300
+  "Encargado/a": 7500, "Mozas Subencargado/a": 5500, "Parrillero": 5500,
+  "Mozo": 5000, "Bartender": 5500, "Subencargado/a": 6300
 };
 const TARIFA_CD = 5000;
-
-// ══════════════════════════════════════════════════════════════
+ 
+// ══════════════════════════════════════════════════════
 // STATE
-// ══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 let currentEvento = null;
 let empleadosCargados = [];
 let cargaDescState = 'No';
-
-// ══════════════════════════════════════════════════════════════
+let eventosCache = [];
+let eventoSeleccionado = null; // { nombre, fecha }
+ 
+// ══════════════════════════════════════════════════════
 // INIT
-// ══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  // Set today's date
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('home-fecha').value = today;
-
-  // Load webhook
-  const wh = localStorage.getItem('lf_webhook') || '';
-  document.getElementById('config-webhook').value = wh;
-
-  // Load saved events
-  renderGuardados();
   updateBadge();
+  cargarEventos();
 });
-
-// ══════════════════════════════════════════════════════════════
-// NAVIGATION
-// ══════════════════════════════════════════════════════════════
+ 
+// ══════════════════════════════════════════════════════
+// CARGAR EVENTOS DESDE GOOGLE SHEETS
+// ══════════════════════════════════════════════════════
+async function cargarEventos() {
+  document.getElementById('eventos-loading').style.display = 'block';
+  document.getElementById('eventos-error').style.display = 'none';
+  document.getElementById('home-evento-select').style.display = 'none';
+ 
+  try {
+    const res = await fetch(WEBHOOK_URL, { method: 'GET' });
+    const data = await res.json();
+ 
+    if (!data.ok || !data.eventos) throw new Error('Sin datos');
+ 
+    eventosCache = data.eventos;
+    poblarSelectEventos(data.eventos);
+ 
+  } catch(e) {
+    document.getElementById('eventos-loading').style.display = 'none';
+    document.getElementById('eventos-error').style.display = 'block';
+    // Mostrar igual el select vacío para no bloquear
+    document.getElementById('home-evento-select').style.display = 'block';
+  }
+}
+ 
+function recargarEventos() {
+  eventoSeleccionado = null;
+  document.getElementById('evento-info-box').style.display = 'none';
+  document.getElementById('home-evento-select').value = '';
+  document.getElementById('home-evento-manual').value = '';
+  cargarEventos();
+  showToast('↻ Recargando eventos...');
+}
+ 
+function poblarSelectEventos(eventos) {
+  document.getElementById('eventos-loading').style.display = 'none';
+  const select = document.getElementById('home-evento-select');
+  select.innerHTML = '<option value="">— Seleccioná un evento —</option>';
+ 
+  if (eventos.length === 0) {
+    select.innerHTML += '<option disabled>No hay eventos cargados en la planilla</option>';
+  } else {
+    eventos.forEach((ev, i) => {
+      const label = ev.fecha ? `${ev.fecha} · ${ev.nombre}` : ev.nombre;
+      select.innerHTML += `<option value="${i}">${label}</option>`;
+    });
+  }
+ 
+  select.style.display = 'block';
+}
+ 
+function onEventoSelect(val) {
+  const box = document.getElementById('evento-info-box');
+  if (val === '') {
+    eventoSeleccionado = null;
+    box.style.display = 'none';
+    return;
+  }
+  const ev = eventosCache[parseInt(val)];
+  if (!ev) return;
+  eventoSeleccionado = ev;
+  document.getElementById('home-evento-manual').value = '';
+  document.getElementById('evento-info-fecha').textContent = ev.fecha || '';
+  document.getElementById('evento-info-nombre').textContent = ev.nombre;
+  box.style.display = 'block';
+ 
+  // Auto-completar fecha si la tenemos
+  if (ev.fecha) {
+    const parts = ev.fecha.split('/');
+    if (parts.length === 3) {
+      const isoDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+      document.getElementById('home-fecha').value = isoDate;
+    }
+  }
+}
+ 
+function onManualEvento(val) {
+  if (val.trim()) {
+    // Si escriben manual, limpiar el select
+    document.getElementById('home-evento-select').value = '';
+    document.getElementById('evento-info-box').style.display = 'none';
+    eventoSeleccionado = null;
+  }
+}
+ 
+// ══════════════════════════════════════════════════════
+// NAVEGACIÓN
+// ══════════════════════════════════════════════════════
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + id).classList.add('active');
   window.scrollTo(0, 0);
 }
-
-function switchTab(tab) {
+ 
+function switchTab(tab, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
+  el.classList.add('active');
   document.getElementById('tab-nuevo').style.display = tab === 'nuevo' ? 'block' : 'none';
   document.getElementById('tab-guardados').style.display = tab === 'guardados' ? 'block' : 'none';
-  document.getElementById('tab-config').style.display = tab === 'config' ? 'block' : 'none';
   if (tab === 'guardados') renderGuardados();
 }
-
-// ══════════════════════════════════════════════════════════════
-// SEARCH EMPLEADOS
-// ══════════════════════════════════════════════════════════════
+ 
+// ══════════════════════════════════════════════════════
+// INICIAR EVENTO
+// ══════════════════════════════════════════════════════
+function iniciarEvento() {
+  const encargado = document.getElementById('home-encargado').value;
+  const fecha = document.getElementById('home-fecha').value;
+  const manual = document.getElementById('home-evento-manual').value.trim();
+  const nombreEvento = eventoSeleccionado ? eventoSeleccionado.nombre : manual;
+ 
+  if (!encargado) return showToast('⚠️ Seleccioná el encargado/a');
+  if (!nombreEvento) return showToast('⚠️ Seleccioná o escribí el evento');
+  if (!fecha) return showToast('⚠️ Ingresá la fecha');
+ 
+  currentEvento = { fecha, evento: nombreEvento, encargado };
+  empleadosCargados = [];
+  cargaDescState = 'No';
+ 
+  document.getElementById('carga-evento-label').textContent = nombreEvento.length > 40
+    ? nombreEvento.substring(0, 40) + '...'
+    : nombreEvento.toUpperCase();
+ 
+  renderEmpleados();
+  resetEmpForm();
+  showScreen('carga');
+}
+ 
+// ══════════════════════════════════════════════════════
+// BÚSQUEDA DE EMPLEADOS
+// ══════════════════════════════════════════════════════
 function searchEmpleado(query) {
   const results = document.getElementById('search-results');
-  const hidden = document.getElementById('emp-selected');
-
-  if (!query || query.length < 1) {
-    results.classList.remove('open');
-    return;
-  }
-
+  if (!query || query.length < 1) { results.classList.remove('open'); return; }
+ 
   const q = query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  const matches = EMPLEADOS.filter(e => {
-    const norm = e.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-    return norm.includes(q);
-  }).slice(0, 8);
-
+  const matches = EMPLEADOS.filter(e =>
+    e.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q)
+  ).slice(0, 8);
+ 
   if (matches.length === 0) {
-    results.innerHTML = '<div class="search-result-item" style="color:var(--gris)">Sin resultados</div>';
+    results.innerHTML = '<div class="search-result-item" style="color:var(--gris)">Sin resultados — podés escribir el nombre completo</div>';
   } else {
     results.innerHTML = matches.map(m => {
-      const highlighted = m.replace(new RegExp(`(${query})`, 'gi'), '<em>$1</em>');
-      return `<div class="search-result-item" onmousedown="selectEmpleado('${m.replace(/'/g,"\\'")}', '${m.replace(/'/g,"\\'")}')"><span style="font-size:16px">👤</span> ${highlighted}</div>`;
+      const hi = m.replace(new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'), '<em>$1</em>');
+      return `<div class="search-result-item" onmousedown="selectEmpleado('${m.replace(/'/g,"\\'")}')">👤 ${hi}</div>`;
     }).join('');
   }
   results.classList.add('open');
 }
-
-function selectEmpleado(nombre, value) {
+ 
+function selectEmpleado(nombre) {
   document.getElementById('emp-search').value = nombre;
-  document.getElementById('emp-selected').value = value;
+  document.getElementById('emp-selected').value = nombre;
   document.getElementById('search-results').classList.remove('open');
 }
-
+ 
 document.addEventListener('click', e => {
-  if (!e.target.closest('.search-wrap')) {
+  if (!e.target.closest('.search-wrap'))
     document.getElementById('search-results').classList.remove('open');
-  }
 });
-
-// ══════════════════════════════════════════════════════════════
-// CARGA/DESCARGA TOGGLE
-// ══════════════════════════════════════════════════════════════
+ 
+// ══════════════════════════════════════════════════════
+// CARGA/DESCARGA
+// ══════════════════════════════════════════════════════
 function setCargaDesc(val) {
   cargaDescState = val;
   document.getElementById('cd-no').classList.toggle('active', val === 'No');
   document.getElementById('cd-si').classList.toggle('active', val === 'Sí');
   document.getElementById('hs-cd-wrap').style.display = val === 'Sí' ? 'block' : 'none';
 }
-
-// ══════════════════════════════════════════════════════════════
-// INICIAR EVENTO
-// ══════════════════════════════════════════════════════════════
-function iniciarEvento() {
-  const fecha = document.getElementById('home-fecha').value;
-  const evento = document.getElementById('home-evento').value.trim();
-  const encargado = document.getElementById('home-encargado').value;
-
-  if (!fecha) return showToast('⚠️ Ingresá la fecha');
-  if (!evento) return showToast('⚠️ Ingresá el nombre del evento');
-  if (!encargado) return showToast('⚠️ Seleccioná el encargado/a');
-
-  currentEvento = { fecha, evento, encargado };
-  empleadosCargados = [];
-  cargaDescState = 'No';
-
-  document.getElementById('carga-evento-label').textContent = evento.toUpperCase();
-  renderEmpleados();
-  resetEmpForm();
-  showScreen('carga');
-}
-
-// ══════════════════════════════════════════════════════════════
+ 
+// ══════════════════════════════════════════════════════
 // AGREGAR EMPLEADO
-// ══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function agregarEmpleado() {
   const nombre = document.getElementById('emp-selected').value || document.getElementById('emp-search').value.trim();
   const funcion = document.getElementById('emp-funcion').value;
   const horas = document.getElementById('emp-horas').value;
   const obs = document.getElementById('emp-obs').value.trim();
   const hsCD = cargaDescState === 'Sí' ? document.getElementById('emp-hs-cd').value : '';
-
+ 
   if (!nombre) return showToast('⚠️ Seleccioná un empleado');
   if (!funcion) return showToast('⚠️ Seleccioná la función');
   if (!horas) return showToast('⚠️ Seleccioná las horas');
   if (cargaDescState === 'Sí' && !hsCD) return showToast('⚠️ Ingresá las horas de C/D');
-
-  // Calculate total
+ 
   const tarifaHora = TARIFAS[funcion] || 0;
   const subtotalHoras = parseFloat(horas) * tarifaHora;
   const adicionalCD = cargaDescState === 'Sí' ? parseFloat(hsCD || 0) * TARIFA_CD : 0;
   const total = subtotalHoras + adicionalCD;
-
-  empleadosCargados.push({
-    nombre, funcion,
-    horas: parseFloat(horas),
-    cargaDesc: cargaDescState,
-    hsCD: hsCD ? parseFloat(hsCD) : null,
-    obs,
-    subtotalHoras, adicionalCD, total
-  });
-
+ 
+  empleadosCargados.push({ nombre, funcion, horas: parseFloat(horas), cargaDesc: cargaDescState, hsCD: hsCD ? parseFloat(hsCD) : null, obs, subtotalHoras, adicionalCD, total });
   renderEmpleados();
   resetEmpForm();
   showToast(`✓ ${nombre.split(' ')[0]} agregado`);
 }
-
+ 
+function eliminarEmpleado(idx) {
+  empleadosCargados.splice(idx, 1);
+  renderEmpleados();
+}
+ 
+function renderEmpleados() {
+  const container = document.getElementById('lista-empleados');
+  if (empleadosCargados.length === 0) {
+    container.innerHTML = '<div class="empty-state" style="padding:20px 0;"><span class="emoji">👥</span>Aún no agregaste empleados</div>';
+    return;
+  }
+  container.innerHTML = empleadosCargados.map((e, i) => `
+    <div class="empleado-row">
+      <button class="empleado-delete" onclick="eliminarEmpleado(${i})">✕</button>
+      <div class="empleado-nombre">${e.nombre}</div>
+      <div class="empleado-detalle">${e.funcion} · ${e.horas}hs${e.cargaDesc === 'Sí' ? ` · C/D ${e.hsCD}hs` : ''}${e.obs ? ` · ${e.obs}` : ''}</div>
+      <div class="empleado-total">$${formatNum(e.total)}</div>
+    </div>
+  `).join('');
+}
+ 
 function resetEmpForm() {
   document.getElementById('emp-search').value = '';
   document.getElementById('emp-selected').value = '';
@@ -785,47 +613,17 @@ function resetEmpForm() {
   document.getElementById('emp-hs-cd').value = '';
   setCargaDesc('No');
 }
-
-function eliminarEmpleado(idx) {
-  empleadosCargados.splice(idx, 1);
-  renderEmpleados();
-}
-
-function renderEmpleados() {
-  const container = document.getElementById('lista-empleados');
-  if (empleadosCargados.length === 0) {
-    container.innerHTML = '<div class="empty-state" style="padding:20px 0;"><span class="emoji">👥</span>Aún no agregaste empleados</div>';
-    return;
-  }
-  container.innerHTML = empleadosCargados.map((e, i) => `
-    <div class="empleado-row complete">
-      <button class="empleado-delete" onclick="eliminarEmpleado(${i})">✕</button>
-      <div class="empleado-nombre">${e.nombre}</div>
-      <div class="empleado-detalle">
-        ${e.funcion} · ${e.horas}hs
-        ${e.cargaDesc === 'Sí' ? ` · C/D ${e.hsCD}hs` : ''}
-        ${e.obs ? ` · <em style="color:var(--gris)">${e.obs}</em>` : ''}
-      </div>
-      <div style="font-size:13px; color:var(--marron); margin-top:4px; font-weight:600;">
-        $${formatNum(e.total)}
-      </div>
-    </div>
-  `).join('');
-}
-
-// ══════════════════════════════════════════════════════════════
+ 
+// ══════════════════════════════════════════════════════
 // RESUMEN
-// ══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function irAResumen() {
   if (empleadosCargados.length === 0) return showToast('⚠️ Agregá al menos un empleado');
-
   const totalEvento = empleadosCargados.reduce((a, e) => a + e.total, 0);
-  const fecha = formatFecha(currentEvento.fecha);
-
   document.getElementById('resumen-contenido').innerHTML = `
     <div class="resumen-evento">
       <div class="resumen-evento-nombre">${currentEvento.evento}</div>
-      <div class="resumen-evento-meta">${fecha} · Encargado/a: ${currentEvento.encargado}</div>
+      <div class="resumen-evento-meta">${formatFecha(currentEvento.fecha)} · ${currentEvento.encargado}</div>
       ${empleadosCargados.map(e => `
         <div class="resumen-empleado">
           <div>
@@ -840,67 +638,20 @@ function irAResumen() {
         <div style="font-size:18px; font-weight:700; color:var(--beige);">$${formatNum(totalEvento)}</div>
       </div>
     </div>
-    <div style="font-size:12px; color:var(--gris); text-align:center; line-height:1.5;">
-      ${empleadosCargados.length} empleado${empleadosCargados.length !== 1 ? 's' : ''} · Revisá todo antes de confirmar
-    </div>
+    <div style="font-size:12px; color:var(--gris); text-align:center;">${empleadosCargados.length} empleado${empleadosCargados.length !== 1 ? 's' : ''} · Revisá todo antes de confirmar</div>
   `;
-
   showScreen('resumen');
 }
-
-function volverACarga() {
-  showScreen('carga');
-}
-
-// ══════════════════════════════════════════════════════════════
-// ENVIAR DATOS
-// ══════════════════════════════════════════════════════════════
+ 
+// ══════════════════════════════════════════════════════
+// ENVIAR
+// ══════════════════════════════════════════════════════
 async function enviarDatos() {
   const btn = document.getElementById('btn-enviar');
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>Enviando...';
-
-  const webhook = localStorage.getItem('lf_webhook') || '';
-  const payload = buildPayload();
-
-  // Always save locally first
-  saveLocally(payload);
-
-  if (webhook) {
-    try {
-      await fetch(webhook, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      document.getElementById('exito-msg').textContent = `${empleadosCargados.length} filas enviadas a Google Sheets. ¡Evento registrado!`;
-      document.getElementById('exito-texto-wrap').style.display = 'none';
-    } catch(e) {
-      mostrarFallbackTexto(payload);
-    }
-  } else {
-    mostrarFallbackTexto(payload);
-  }
-
-  btn.disabled = false;
-  btn.innerHTML = '✓ CONFIRMAR Y ENVIAR';
-  updateBadge();
-  showScreen('exito');
-}
-
-function mostrarFallbackTexto(payload) {
-  document.getElementById('exito-msg').textContent = 'Datos guardados en el celular. Copiá el texto de abajo para pegarlo en la planilla.';
-  const lines = payload.rows.map(r =>
-    [r.fecha, r.evento, r.encargado, r.empleado, r.funcion, r.horas, r.cargaDesc, r.hsCD || '', r.obs || ''].join('\t')
-  );
-  document.getElementById('exito-texto').textContent =
-    'Fecha\tEvento\tEncargado\tEmpleado\tFunción\tHoras\tC/D\tHs C/D\tObservaciones\n' + lines.join('\n');
-  document.getElementById('exito-texto-wrap').style.display = 'block';
-}
-
-function buildPayload() {
-  return {
+ 
+  const payload = {
     fecha: currentEvento.fecha,
     evento: currentEvento.evento,
     encargado: currentEvento.encargado,
@@ -917,94 +668,89 @@ function buildPayload() {
       obs: e.obs
     }))
   };
-}
-
-function saveLocally(payload) {
+ 
+  // Guardar localmente siempre
   let saved = JSON.parse(localStorage.getItem('lf_eventos') || '[]');
   saved.unshift({ ...payload, savedAt: new Date().toISOString() });
-  if (saved.length > 50) saved = saved.slice(0, 50);
-  localStorage.setItem('lf_eventos', JSON.stringify(saved));
+  localStorage.setItem('lf_eventos', JSON.stringify(saved.slice(0, 50)));
+ 
+  try {
+    await fetch(WEBHOOK_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    document.getElementById('exito-msg').textContent = `${empleadosCargados.length} filas enviadas correctamente a Google Sheets.`;
+    document.getElementById('exito-texto-wrap').style.display = 'none';
+  } catch(e) {
+    document.getElementById('exito-msg').textContent = 'No se pudo conectar. Copiá el texto de abajo para pegarlo manualmente.';
+    const lines = payload.rows.map(r => [r.fecha, r.evento, r.encargado, r.empleado, r.funcion, r.horas, r.cargaDesc, r.hsCD || '', r.obs || ''].join('\t'));
+    document.getElementById('exito-texto').textContent = 'Fecha\tEvento\tEncargado\tEmpleado\tFunción\tHoras\tC/D\tHs C/D\tObs\n' + lines.join('\n');
+    document.getElementById('exito-texto-wrap').style.display = 'block';
+  }
+ 
+  btn.disabled = false;
+  btn.innerHTML = '✓ CONFIRMAR Y ENVIAR';
+  updateBadge();
+  showScreen('exito');
 }
-
+ 
 function copiarTexto() {
-  const text = document.getElementById('exito-texto').textContent;
-  navigator.clipboard.writeText(text).then(() => showToast('✓ Copiado al portapapeles'));
+  navigator.clipboard.writeText(document.getElementById('exito-texto').textContent)
+    .then(() => showToast('✓ Copiado'));
 }
-
-// ══════════════════════════════════════════════════════════════
+ 
+// ══════════════════════════════════════════════════════
 // GUARDADOS
-// ══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function renderGuardados() {
   const saved = JSON.parse(localStorage.getItem('lf_eventos') || '[]');
   const container = document.getElementById('list-guardados');
-
   if (saved.length === 0) {
-    container.innerHTML = `<div class="empty-state"><span class="emoji">📋</span>Todavía no hay eventos guardados.<br>Empezá cargando uno nuevo.</div>`;
+    container.innerHTML = '<div class="empty-state"><span class="emoji">📋</span>Todavía no hay eventos guardados.</div>';
     return;
   }
-
-  container.innerHTML = saved.map((ev, i) => `
+  container.innerHTML = saved.map(ev => `
     <div class="saved-badge">
       <div class="saved-badge-info">
         <div class="saved-badge-nombre">${ev.evento}</div>
         <div class="saved-badge-meta">${formatFecha(ev.fecha)} · ${ev.encargado} · ${ev.rows.length} empleados</div>
       </div>
-      <div class="saved-badge-status">📋</div>
+      <div style="font-size:20px;">📋</div>
     </div>
   `).join('');
 }
-
+ 
 function updateBadge() {
   const saved = JSON.parse(localStorage.getItem('lf_eventos') || '[]');
   document.getElementById('badge-count').textContent = saved.length;
 }
-
-// ══════════════════════════════════════════════════════════════
+ 
+// ══════════════════════════════════════════════════════
 // MISC
-// ══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function cancelarEvento() {
-  if (confirm('¿Cancelar la carga del evento? Se perderán los datos ingresados.')) {
-    showScreen('home');
-  }
+  if (confirm('¿Cancelar la carga? Se perderán los datos.')) showScreen('home');
 }
-
+ 
 function nuevoEvento() {
   currentEvento = null;
   empleadosCargados = [];
-  document.getElementById('home-evento').value = '';
+  eventoSeleccionado = null;
   document.getElementById('home-encargado').value = '';
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('home-fecha').value = today;
+  document.getElementById('home-evento-select').value = '';
+  document.getElementById('home-evento-manual').value = '';
+  document.getElementById('evento-info-box').style.display = 'none';
+  document.getElementById('home-fecha').value = new Date().toISOString().split('T')[0];
   showScreen('home');
+  cargarEventos();
 }
-
-function saveWebhook() {
-  const val = document.getElementById('config-webhook').value.trim();
-  localStorage.setItem('lf_webhook', val);
-  showToast(val ? '✓ URL guardada' : '✓ URL borrada');
-}
-
-function clearAll() {
-  if (confirm('¿Borrar todos los datos guardados? Esta acción no se puede deshacer.')) {
-    localStorage.removeItem('lf_eventos');
-    localStorage.removeItem('lf_webhook');
-    document.getElementById('config-webhook').value = '';
-    updateBadge();
-    showToast('✓ Datos borrados');
-  }
-}
-
-function formatNum(n) {
-  return Math.round(n).toLocaleString('es-AR');
-}
-
+ 
+function formatNum(n) { return Math.round(n).toLocaleString('es-AR'); }
+ 
 function formatFecha(dateStr) {
   if (!dateStr) return '';
   const [y, m, d] = dateStr.split('-');
   const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   return `${parseInt(d)} ${meses[parseInt(m)-1]} ${y}`;
 }
-
+ 
 let toastTimer;
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -1016,3 +762,4 @@ function showToast(msg) {
 </script>
 </body>
 </html>
+ 
