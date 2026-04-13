@@ -282,6 +282,7 @@
       <option>Mozas Subencargado/a</option>
       <option>Parrillero</option>
       <option>Mozo</option>
+      <option>Mozo Esp</option>
       <option>Bartender</option>
       <option>Subencargado/a</option>
     </select>
@@ -363,18 +364,26 @@ const WEBHOOKS = {
 
 const EMPLEADOS = ["Abigail Sanchez","Aldana Milagros López","Alicia Gisel Sosa","Anabela Beatriz Dominguez","Andrea Edith Romero","Andrés Escudero","Angel Emanuel Gauna","Antonella Alejandra Sanabria","Antonella Camejo","Antonella Coppola","Antonio Rubén Suarez","Ariadna Jaimes","Arnaldo Andres Roa","Ayelen Milagros Faundez Muñoz","Bautista Garcia Yañez de Anchorena","Beltrán Casá","Brenda Barrera","Brisa Gabriela Anahi Reynoso","Brisa Silva","Camila Antonella Sofio","Camila Monserrat Miranda Caballero","Camila Nahir Prezel","Candela Soledad Amaya","Carlos Maximiliano Sofio","Carmen Noemí Salmi Ibarra","Celeste López","Celina Ruiz","Cesar Agustin Peñaloza","Cinthia Macarena leguiza","Cintia Beatriz Paredes","Cintia Carolina Batalla","Claudia Noemí Bareiro","Daiana Candela Fernandez","Daiana Fiorella Ceballos","Daiana Gisela Contreras","Daiana Rocycela Sosa","Dalma Yanella Amaya","Damaris Melina Leonardi","Daniel Alpino","Daniela Beatriz Bareiro","David Nieto","Delicia Prezel","Denisse Luna López Espinosa","Eduardo Maximiliano Arce","Elisa Pertiné","Eloisa Fini Carrieri","Emanuel Antonio Barrera","Emiliano Cimuro","Esteban Pascual Mendoza","Estefania Ramirez","Evelin Jenifer Nieto","Ezequiel Torija","Fabián Orlando Ruiz","Federico Pagalday","Fernando Fabián Mendoza","Florencia Ramona Toledo","Francisco María Páez de la Torre","Franco Daniel Soto","Franco Ezequiel Velázquez","Franco Iván Fernández","Gastón Luna","Gerardo Fernández","Gisela Analía Schinca","Gonzalo Fabián Muñoz","Guido Nicolas Maximiliano","Guillermina puglia","Génesis Candela Carnales","Ian Torres","Iara Ludmila Sánchez","Ignacio Bautista Colombo","Isabel María Dorado","Isabella Carratelli","Ivana mariquena Prieto","Jacqueline Florencia Serapio","Jazmin Vanoni","Jessica Stefanía Esquivel","Johana Castillo","Jonathan Brian Toledo","Josefina Dorado","Josefina Roggero","José Antonio Barrera","Juan Francisco Constantino","Juan Pablo Quinci","Juana Martin","Julia De La Arena","Kevin Alfaro","Lautaro Maldonado","Leandro Batalla","Leandro Nahuel Ledesma","Leandro Zalazar","Leila Belén Rivero","Leonel Jesús Arroyo","Luca Godoy","Lucas Castro","Lucas Matías Bisconti","Lucia jael Saldaño Mastrolorenzo","Ludmila Insaurralde","Luis Ariel Castro","Luz Candela Rojas","Luz Constanza Caceres Roa","Luz Federica Abigail Prieto","Maia Selena Rivero","Maia Valentina Escobar","Malena Alanis Darán","Malena Scarioni","Malvina Soledad Nieto","Marcelo Alberto Molina","Margarita Correa","Maria Angelica Fatti","Mariana Galeano","Marina Elizabeth Cajal","Mario Ezequiel Medina","Marisol Velázquez","Martina Pereyra","María Josefina Pesavento","Matias Javier Williams","Matias Vera","Matías Viacava","Maximiliano Fernandez","Maximiliano Gabriel Fernández","Mayra Lorena Espíndola","Melani Arriscal","Micaela Abigail Gomez","Milagros Lucero","Morena Ailen Sanchez","Nancy Beatriz Sosa","Nayla Saffores","Nazarena Morena Feliz","Nicole Berger","Noelia Agustina Paniagua","Nuevo empleado","Oriana Belén Dahir","Rafael Andrés Pérez","Ricardo Emanuel Prezel","Roberto Cayetano Cammarano","Rocio Daiana Martinez","Rocio Galván","Rodrigo Fernández Duarte","Romina Jeanette Lopez","Román Alexis Ibáñez","Santiago Israel Sánchez","Santiago Schneider","Selene Prezel","Sharon Cinthia Cajal","Silvana Beatriz Cimino","Silvana Fiorella Ceballos","Valeria Araceli Elizabeth Gauna","Vanina Ailen Mansilla","Verónica Estigarribia Escobar","Waltera Gastón Ciro Barrera","Yamil Abigail Sanchez","Yamila Melany Acevedo","Yanina Soledad Ramírez","Zaira Macarena Nieto","Zenón Lobo Marquez","Zoe Tatiana Prezel"];
 
+// ── TARIFAS: agregado Mozo Esp $5.750/hora ──
 const TARIFAS = {
-  "Encargado/a": 7500, "Mozas Subencargado/a": 5500, "Parrillero": 5500,
-  "Mozo": 5000, "Bartender": 5500, "Subencargado/a": 6300
+  "Encargado/a": 7500,
+  "Mozas Subencargado/a": 5500,
+  "Parrillero": 5500,
+  "Mozo": 5000,
+  "Mozo Esp": 5750,
+  "Bartender": 5500,
+  "Subencargado/a": 6300
 };
 const TARIFA_CD = 5000;
 
 const ZONAS_EMPLEADOS = {"Gisela Analía schinca": "Moreno", "Abigail Sanchez": "Moreno", "Aldana Milagros López": "Moreno", "Alicia Gisel Sosa": "Moreno", "Anabela Beatriz Dominguez": "Moreno", "Andrea Edith Romero": "Capital", "Antonella Alejandra Sanabria": "Moreno", "Antonella Camejo": "Moreno", "Antonella Coppola": "Moreno", "Antonio Rubén Suarez": "Otras Zonas", "Ariadna Jaimes": "Moreno", "Arnaldo Andres Roa": "Zona Norte", "Ayelen Milagros Faundez Muñoz": "Moreno", "Bautista Garcia Yañez de Anchorena": "Capital", "Beltrán Casá": "Capital", "Brenda Barrera": "Moreno", "Brisa Gabriela Anahi Reynoso": "Otras Zonas", "Brisa Silva": "Otras Zonas", "Camila Antonella Sofio": "Capital", "Camila Monserrat Miranda Caballero": "Moreno", "Camila Nahir Prezel": "Moreno", "Candela Soledad Amaya": "Moreno", "Carlos Maximiliano Sofio": "Capital", "Martina Pereyra": "Capital", "Carmen Noemí Salmi Ibarra": "Moreno", "Celeste López": "Moreno", "Celina Ruiz": "Moreno", "Cesar Agustin Peñaloza": "Otras Zonas", "Cinthia Macarena leguiza": "Moreno", "Cintia Beatriz Paredes": "Moreno", "Cintia Carolina Batalla": "Moreno", "Claudia Noemí Bareiro": "Moreno", "Daiana Candela Fernandez": "Otras Zonas", "Daiana Fiorella Ceballos": "Moreno", "Daiana Gisela Contreras": "Moreno", "Daiana Rocycela Sosa": "Moreno", "Dalma Yanella Amaya": "Moreno", "Damaris Melina Leonardi": "Moreno", "Daniel Alpino": "Otras Zonas", "Daniela Beatriz Bareiro": "Moreno", "David Nieto": "Moreno", "Delicia Prezel": "Moreno", "Denisse Luna López Espinosa": "Capital", "Eduardo Maximiliano Arce": "Otras Zonas", "Elisa Pertiné": "Capital", "Eloisa Fini Carrieri": "Capital", "Emanuel Antonio Barrera": "Moreno", "Emiliano Cimuro": "Otras Zonas", "Estefania Ramirez": "Moreno", "Ezequiel Torija": "Capital", "Fabián Orlando Ruiz": "Moreno", "Federico Pagalday": "Moreno", "Fernando Fabián Mendoza": "Otras Zonas", "Florencia Ramona Toledo": "Moreno", "Francisco María Páez de la Torre": "Capital", "Franco Daniel Soto": "Otras Zonas", "Franco Ezequiel Velázquez": "Otras Zonas", "Franco Iván Fernández": "Moreno", "Gastón Luna": "Otras Zonas", "Génesis Candela Carnales": "Otras Zonas", "Gerardo Fernández": "Otras Zonas", "Gonzalo Fabián Muñoz": "Moreno", "Guido Nicolas Maximiliano": "Otras Zonas", "Guillermina puglia": "Moreno", "Ian Torres": "Otras Zonas", "Iara Ludmila Sánchez": "Moreno", "Ignacio Bautista Colombo": "Otras Zonas", "Isabel María Dorado": "Otras Zonas", "Isabella Carratelli": "Otras Zonas", "Ivana mariquena Prieto": "Otras Zonas", "Jacqueline Florencia Serapio": "Otras Zonas", "Jazmin Vanoni": "Otras Zonas", "Jessica Stefanía Esquivel": "Moreno", "Johana Castillo": "Moreno", "Jonathan Brian Toledo": "Moreno", "José Antonio Barrera": "Moreno", "Josefina Dorado": "Otras Zonas", "Juan Francisco Constantino": "Otras Zonas", "Juan Pablo Quinci": "Otras Zonas", "Juana Martin": "Otras Zonas", "Julia De La Arena": "Otras Zonas", "Kevin Alfaro": "Zona Norte", "Lautaro Maldonado": "Otras Zonas", "Leandro Batalla": "Moreno", "Leandro Nahuel Ledesma": "Moreno", "Leandro Zalazar": "Otras Zonas", "Leila Belén Rivero": "Otras Zonas", "Leonel Jesús Arroyo": "Otras Zonas", "Luca Godoy": "Moreno", "Lucas Castro": "Moreno", "Lucas Matías Bisconti": "Otras Zonas", "Lucia jael Saldaño Mastrolorenzo": "Capital", "Ludmila Insaurralde": "Moreno", "Luis Ariel Castro": "Otras Zonas", "Luz Candela Rojas": "Otras Zonas", "Luz Constanza Caceres Roa": "Otras Zonas", "Luz Federica Abigail Prieto": "Moreno", "Maia Selena Rivero": "Moreno", "Maia Valentina Escobar": "Moreno", "Malena Alanis Darán": "Moreno", "Malena Scarioni": "Moreno", "Malvina Soledad Nieto": "Moreno", "Marcelo Alberto Molina": "Otras Zonas", "Margarita Correa": "Otras Zonas", "Maria Angelica Fatti": "Capital", "María Josefina Pesavento": "Otras Zonas", "Mariana Galeano": "Otras Zonas", "Marina Elizabeth Cajal": "Moreno", "Mario Ezequiel Medina": "Zona Norte", "Matias Javier Williams": "Otras Zonas", "Matias Vera": "Zona Norte", "Matías Viacava": "Otras Zonas", "Maximiliano Fernandez": "Zona Norte", "Mayra Lorena Espíndola": "Moreno", "Melani Arriscal": "Moreno", "Micaela Abigail Gomez": "Moreno", "Milagros Lucero": "Moreno", "Morena Ailen Sanchez": "Moreno", "Nancy Beatriz Sosa": "Moreno", "Nayla Saffores": "Moreno", "Nazarena Morena Feliz": "Otras Zonas", "Nicole Berger": "Otras Zonas", "Noelia Agustina Paniagua": "Moreno", "Oriana Belén Dahir": "Moreno", "Rafael Andrés Pérez": "Otras Zonas", "Ricardo Emanuel Prezel": "Moreno", "Roberto Cayetano Cammarano": "Otras Zonas", "Rocio Galván": "Otras Zonas", "Román Alexis Ibáñez": "Moreno", "Romina Jeanette Lopez": "Moreno", "Santiago Schneider": "Otras Zonas", "Selene Prezel": "Moreno", "Sharon Cinthia Cajal": "Moreno", "Silvana Beatriz Cimino": "Otras Zonas", "Silvana Fiorella Ceballos": "Moreno", "Valeria Araceli Elizabeth Gauna": "Moreno", "Vanina Ailen Mansilla": "Moreno", "Verónica Estigarribia Escobar": "Otras Zonas", "Waltera Gastón Ciro Barrera": "Moreno", "Yamil Abigail Sanchez": "Moreno", "Yamila Melany Acevedo": "Moreno", "Yanina Soledad Ramírez": "Moreno", "Zaira Macarena Nieto": "Moreno", "Zenón Lobo Marquez": "Otras Zonas", "Zoe Tatiana Prezel": "Moreno", "Evelin Jenifer Nieto": "Capital", "Esteban Pascual Mendoza": "Otras Zonas", "Marisol Velázquez": "Moreno", "Angel Emanuel Gauna": "Moreno", "Santiago Israel Sánchez": "Moreno", "Gisela Analía Schinca": "Moreno", "Rodrigo Fernández Duarte": "Otras Zonas", "Josefina Roggero": "Capital", "Andrés Escudero": "Capital", "Rocio Daiana Martinez": "Otras Zonas", "Maximiliano Gabriel Fernández": "Otras Zonas", "Nuevo empleado": "Otras Zonas"};
 
+// ── VIATICOS: agregado Escobar $8.000 ──
 const VIATICOS = {
   "Moreno": 8000,
   "Capital": 5000,
   "Zona Norte": 4000,
+  "Escobar": 8000,
   "Otras Zonas": 4000
 };
 
@@ -420,7 +429,6 @@ async function cargarEventos() {
   } catch(e) {
     document.getElementById('eventos-loading').style.display = 'none';
     document.getElementById('eventos-error').style.display = 'block';
-    // Mostrar igual el select vacío para no bloquear
     document.getElementById('home-evento-select').style.display = 'block';
   }
 }
@@ -466,7 +474,6 @@ function onEventoSelect(val) {
   document.getElementById('evento-info-nombre').textContent = ev.nombre;
   box.style.display = 'block';
 
-  // Auto-completar fecha si la tenemos
   if (ev.fecha) {
     const parts = ev.fecha.split('/');
     if (parts.length === 3) {
@@ -478,7 +485,6 @@ function onEventoSelect(val) {
 
 function onManualEvento(val) {
   if (val.trim()) {
-    // Si escriben manual, limpiar el select
     document.getElementById('home-evento-select').value = '';
     document.getElementById('evento-info-box').style.display = 'none';
     eventoSeleccionado = null;
@@ -689,7 +695,6 @@ async function enviarDatos() {
     }))
   };
 
-  // Guardar localmente siempre
   let saved = JSON.parse(localStorage.getItem('lf_eventos') || '[]');
   saved.unshift({ ...payload, savedAt: new Date().toISOString() });
   localStorage.setItem('lf_eventos', JSON.stringify(saved.slice(0, 50)));
@@ -768,7 +773,7 @@ function formatNum(n) { return Math.round(n).toLocaleString('es-AR'); }
 function formatFecha(dateStr) {
   if (!dateStr) return '';
   const [y, m, d] = dateStr.split('-');
-  const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const meses = ['Ene','Feb','Mar','Ago','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   return `${parseInt(d)} ${meses[parseInt(m)-1]} ${y}`;
 }
 
