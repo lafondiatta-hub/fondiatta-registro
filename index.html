@@ -139,6 +139,10 @@
 
   /* Input número grande */
   .input-money { font-size: 18px; font-weight: 600; text-align: right; letter-spacing: 0.5px; }
+
+  /* Versión badge */
+  .version-btn { background: none; border: 1px solid #3a3633; border-radius: 6px; color: var(--gris); font-size: 9px; padding: 4px 8px; cursor: pointer; letter-spacing: 0.5px; margin-top: 4px; }
+  .version-btn:active { background: #2a2826; color: var(--chalk); }
 </style>
 </head>
 <body>
@@ -147,6 +151,7 @@
   <div>
     <div class="header-brand">LA FONDIATTA</div>
     <div class="header-sub">REGISTRO DE PERSONAL</div>
+    <button class="version-btn" onclick="forzarRecarga()">v2.0 · Actualizar</button>
   </div>
   <svg class="header-logo" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
     <line x1="40" y1="8" x2="40" y2="72" stroke="#E1D9C8" stroke-width="3" stroke-linecap="round"/>
@@ -943,6 +948,17 @@ function showToast(msg) {
   t.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function forzarRecarga() {
+  if (confirm('¿Actualizar la app? Se va a recargar la página.')) {
+    // Limpiar caché del service worker si existe
+    if ('caches' in window) {
+      caches.keys().then(names => names.forEach(name => caches.delete(name)));
+    }
+    // Forzar recarga sin caché
+    window.location.reload(true);
+  }
 }
 </script>
 </body>
