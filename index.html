@@ -211,7 +211,7 @@
   <div id="tab-cierres" style="display:none;">
     <div id="cierres-loading" class="loading-eventos" style="display:none;"><span class="spinner"></span> Cargando cierres...</div>
     <div id="list-cierres"><div class="empty-state"><span class="emoji">📊</span>Cargá los cierres para ver el historial.</div></div>
-    <button class="btn btn-secondary" style="margin-top:10px;" onclick="cargarCierres()">↻ Cargar / Actualizar cierres</button>
+    <button class="btn btn-secondary" style="margin-top:10px;" onclick="recargarCierres()">↻ Actualizar cierres</button>
   </div>
 </div>
 
@@ -412,6 +412,11 @@ async function cargarEventos() {
       datosEnVivo = true;
     }
 
+    // Guardar cierres si vienen en la misma respuesta
+    if (data.cierres && data.cierres.length > 0) {
+      cierresCache = data.cierres;
+    }
+
   } catch(e) {
     document.getElementById('eventos-loading').style.display = 'none';
     document.getElementById('eventos-error').style.display = 'block';
@@ -475,17 +480,20 @@ function onManualEvento(val) {
 async function cargarCierres() {
   const loading = document.getElementById('cierres-loading');
   const container = document.getElementById('list-cierres');
+
+  // Si ya tenemos cierres en cache (del GET inicial), mostrarlos directo
+  if (cierresCache.length > 0) {
+    renderCierres(cierresCache);
+    return;
+  }
+
+  // Si no hay cache, recargar desde el servidor
   loading.style.display = 'block';
   container.innerHTML = '';
 
   try {
-    // Google Apps Script redirige con 302 — necesitamos redirect: 'follow'
-    const res = await fetch(WEBHOOK_URL + '?action=cierres', {
-      method: 'GET',
-      redirect: 'follow'
-    });
-    const text = await res.text();
-    const data = JSON.parse(text);
+    const res = await fetch(WEBHOOK_URL, { method: 'GET' });
+    const data = await res.json();
     if (!data.ok || !data.cierres) throw new Error('Sin datos');
 
     cierresCache = data.cierres;
@@ -493,34 +501,42 @@ async function cargarCierres() {
     renderCierres(data.cierres);
 
   } catch(e) {
-    // Intento alternativo: usar JSONP-style via script tag
-    try {
-      const data = await fetchViaScript(WEBHOOK_URL + '?action=cierres');
-      if (data && data.ok && data.cierres) {
-        cierresCache = data.cierres;
-        loading.style.display = 'none';
-        renderCierres(data.cierres);
-        return;
-      }
-    } catch(e2) {}
     loading.style.display = 'none';
     container.innerHTML = '<div class="empty-state"><span class="emoji">⚠️</span>No se pudieron cargar los cierres.<br>Verificá tu conexión.</div>';
   }
 }
 
-// Helper: fetch alternativo que maneja redirects de Google Apps Script
-function fetchViaScript(url) {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.onload = function() {
-      try {
-        resolve(JSON.parse(xhr.responseText));
-      } catch(e) { reject(e); }
-    };
-    xhr.onerror = function() { reject(new Error('XHR failed')); };
-    xhr.send();
-  });
+// Forzar recarga de cierres desde el servidor
+async function recargarCierres() {
+  cierresCache = [];
+  const loading = document.getElementById('cierres-loading');
+  const container = document.getElementById('list-cierres');
+  loading.style.display = 'block';
+  container.innerHTML = '';
+  showToast('↻ Recargando cierres...');
+
+  try {
+    const res = await fetch(WEBHOOK_URL, { method: 'GET' });
+    const data = await res.json();
+    if (!data.ok || !data.cierres) throw new Error('Sin datos');
+
+    cierresCache = data.cierres;
+    // También actualizar eventos y zonas si vienen
+    if (data.eventos) { eventosCache = data.eventos; }
+    if (data.zonas && Object.keys(data.zonas).length > 0) {
+      ZONAS_EMPLEADOS = { ...ZONAS_FALLBACK, ...data.zonas };
+    }
+    if (data.viaticos && Object.keys(data.viaticos).length > 0) {
+      VIATICOS = { ...VIATICOS_FALLBACK, ...data.viaticos };
+    }
+
+    loading.style.display = 'none';
+    renderCierres(data.cierres);
+
+  } catch(e) {
+    loading.style.display = 'none';
+    container.innerHTML = '<div class="empty-state"><span class="emoji">⚠️</span>No se pudieron cargar los cierres.<br>Verificá tu conexión.</div>';
+  }
 }
 
 function renderCierres(cierres) {
