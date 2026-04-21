@@ -479,8 +479,13 @@ async function cargarCierres() {
   container.innerHTML = '';
 
   try {
-    const res = await fetch(WEBHOOK_URL + '?action=cierres', { method: 'GET' });
-    const data = await res.json();
+    // Google Apps Script redirige con 302 — necesitamos redirect: 'follow'
+    const res = await fetch(WEBHOOK_URL + '?action=cierres', {
+      method: 'GET',
+      redirect: 'follow'
+    });
+    const text = await res.text();
+    const data = JSON.parse(text);
     if (!data.ok || !data.cierres) throw new Error('Sin datos');
 
     cierresCache = data.cierres;
@@ -488,9 +493,34 @@ async function cargarCierres() {
     renderCierres(data.cierres);
 
   } catch(e) {
+    // Intento alternativo: usar JSONP-style via script tag
+    try {
+      const data = await fetchViaScript(WEBHOOK_URL + '?action=cierres');
+      if (data && data.ok && data.cierres) {
+        cierresCache = data.cierres;
+        loading.style.display = 'none';
+        renderCierres(data.cierres);
+        return;
+      }
+    } catch(e2) {}
     loading.style.display = 'none';
     container.innerHTML = '<div class="empty-state"><span class="emoji">⚠️</span>No se pudieron cargar los cierres.<br>Verificá tu conexión.</div>';
   }
+}
+
+// Helper: fetch alternativo que maneja redirects de Google Apps Script
+function fetchViaScript(url) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.onload = function() {
+      try {
+        resolve(JSON.parse(xhr.responseText));
+      } catch(e) { reject(e); }
+    };
+    xhr.onerror = function() { reject(new Error('XHR failed')); };
+    xhr.send();
+  });
 }
 
 function renderCierres(cierres) {
