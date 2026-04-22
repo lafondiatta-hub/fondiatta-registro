@@ -143,6 +143,17 @@
   /* Versión badge */
   .version-btn { background: none; border: 1px solid #3a3633; border-radius: 6px; color: var(--gris); font-size: 9px; padding: 4px 8px; cursor: pointer; letter-spacing: 0.5px; margin-top: 4px; }
   .version-btn:active { background: #2a2826; color: var(--chalk); }
+
+  /* Detalle cierre */
+  .detalle-back { background: none; border: none; color: var(--marron); font-size: 14px; font-weight: 600; cursor: pointer; padding: 0; margin-bottom: 16px; display: flex; align-items: center; gap: 6px; }
+  .detalle-back:active { opacity: 0.7; }
+  .detalle-emp-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #3a3633; }
+  .detalle-emp-row:last-child { border-bottom: none; }
+  .detalle-emp-name { font-size: 13px; font-weight: 600; color: var(--chalk); }
+  .detalle-emp-meta { font-size: 11px; color: var(--gris); margin-top: 2px; }
+  .detalle-emp-total { font-size: 14px; font-weight: 700; color: var(--beige); white-space: nowrap; }
+  .cierre-hist-item.clickable { cursor: pointer; transition: border-color 0.15s; }
+  .cierre-hist-item.clickable:active { border-color: var(--marron); }
 </style>
 </head>
 <body>
@@ -550,6 +561,15 @@ function renderCierres(cierres) {
     container.innerHTML = '<div class="empty-state"><span class="emoji">📊</span>No hay cierres registrados aún.</div>';
     return;
   }
+
+  // Obtener eventos guardados localmente (los que cargó este encargado)
+  const saved = JSON.parse(localStorage.getItem('lf_eventos') || '[]');
+  const savedMap = {};
+  saved.forEach(ev => {
+    const key = ev.evento.trim().toLowerCase();
+    if (!savedMap[key]) savedMap[key] = ev;
+  });
+
   // Ordenar de más nuevo a más viejo por fecha
   const sorted = [...cierres].sort((a, b) => {
     const parseDate = (f) => {
@@ -560,13 +580,19 @@ function renderCierres(cierres) {
     };
     return parseDate(b.fecha) - parseDate(a.fecha);
   });
-  container.innerHTML = sorted.map(c => {
+
+  container.innerHTML = sorted.map((c, idx) => {
     const estado = c.estado || '—';
     const estadoClass = estado === 'Sobrante' ? 'sobrante' : estado === 'Faltante' ? 'faltante' : estado === 'Exacto' ? 'exacto' : '';
     const devolucion = c.devolucion || 0;
+
+    // Verificar si tenemos el detalle local
+    const key = c.evento.trim().toLowerCase();
+    const tieneDetalle = !!savedMap[key];
+
     return `
-      <div class="cierre-hist-item">
-        <div class="cierre-hist-evento">${c.evento}</div>
+      <div class="cierre-hist-item ${tieneDetalle ? 'clickable' : ''}" ${tieneDetalle ? `onclick="verDetalleCierre('${key.replace(/'/g, "\\'")}')"` : ''}>
+        <div class="cierre-hist-evento">${c.evento} ${tieneDetalle ? '<span style="font-size:11px; color:var(--marron);">▸ Ver detalle</span>' : ''}</div>
         <div class="cierre-hist-meta">${c.fecha || ''} · ${c.encargado || '—'}</div>
         <div class="cierre-hist-grid">
           <div class="cierre-hist-cell">
@@ -598,6 +624,58 @@ function renderCierres(cierres) {
       </div>
     `;
   }).join('');
+}
+
+function verDetalleCierre(eventoKey) {
+  const saved = JSON.parse(localStorage.getItem('lf_eventos') || '[]');
+  const ev = saved.find(e => e.evento.trim().toLowerCase() === eventoKey);
+  if (!ev) return showToast('⚠️ No se encontró el detalle');
+
+  const container = document.getElementById('list-cierres');
+  const totalSueldos = ev.rows.reduce((a, r) => a + (r.total || 0), 0);
+  const cierre = ev.cierre || {};
+
+  container.innerHTML = `
+    <button class="detalle-back" onclick="renderCierres(cierresCache)">← Volver a cierres</button>
+    <div class="resumen-evento">
+      <div class="resumen-evento-nombre">${ev.evento}</div>
+      <div class="resumen-evento-meta">${formatFecha(ev.fecha)} · ${ev.encargado}</div>
+
+      ${ev.rows.map(r => `
+        <div class="detalle-emp-row">
+          <div>
+            <div class="detalle-emp-name">${r.empleado}</div>
+            <div class="detalle-emp-meta">${r.funcion} · ${r.horas}hs${r.cargaDesc === 'Sí' ? ` · C/D ${r.hsCD}hs` : ''}${r.obs ? ` · ${r.obs}` : ''}</div>
+            ${r.total ? `<div class="detalle-emp-meta">Horas: $${formatNum(r.subtotalHoras || 0)}${r.adicionalCD > 0 ? ` · C/D: $${formatNum(r.adicionalCD)}` : ''} · Viático (${r.zona || '—'}): $${formatNum(r.viatico || 0)}</div>` : ''}
+          </div>
+          <div class="detalle-emp-total">${r.total ? '$' + formatNum(r.total) : '—'}</div>
+        </div>
+      `).join('')}
+
+      <div style="border-top:2px solid var(--marron); margin-top:12px; padding-top:12px;">
+        <div class="cierre-linea">
+          <span class="cierre-linea-label" style="font-weight:700; color:var(--chalk);">Total sueldos</span>
+          <span class="cierre-linea-valor" style="font-size:16px;">$${formatNum(totalSueldos)}</span>
+        </div>
+        ${cierre.gastosExtras > 0 ? `
+        <div class="cierre-linea">
+          <span class="cierre-linea-label">Gastos extras</span>
+          <span class="cierre-linea-valor">$${formatNum(cierre.gastosExtras)}</span>
+        </div>` : ''}
+        ${cierre.dineroRecibido > 0 ? `
+        <div class="cierre-linea">
+          <span class="cierre-linea-label">Dinero recibido</span>
+          <span class="cierre-linea-valor">$${formatNum(cierre.dineroRecibido)}</span>
+        </div>
+        <div class="cierre-sep"></div>
+        <div class="cierre-resultado ${cierre.estado === 'Sobrante' ? 'sobrante' : cierre.estado === 'Faltante' ? 'faltante' : 'exacto'}" style="margin-top:8px;">
+          <div class="cierre-resultado-label">${(cierre.estado || '').toUpperCase()}</div>
+          <div class="cierre-resultado-valor">$${formatNum(Math.abs(cierre.devolucion || 0))}</div>
+        </div>` : ''}
+      </div>
+    </div>
+  `;
+  window.scrollTo(0, 0);
 }
 
 // ══════════════════════════════════════════════════════
@@ -843,7 +921,12 @@ async function enviarDatos() {
       horas: e.horas,
       cargaDesc: e.cargaDesc,
       hsCD: e.hsCD,
-      obs: e.obs
+      obs: e.obs,
+      zona: e.zona,
+      subtotalHoras: e.subtotalHoras,
+      adicionalCD: e.adicionalCD,
+      viatico: e.viatico,
+      total: e.total
     }))
   };
 
