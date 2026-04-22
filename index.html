@@ -550,7 +550,17 @@ function renderCierres(cierres) {
     container.innerHTML = '<div class="empty-state"><span class="emoji">📊</span>No hay cierres registrados aún.</div>';
     return;
   }
-  container.innerHTML = cierres.map(c => {
+  // Ordenar de más nuevo a más viejo por fecha
+  const sorted = [...cierres].sort((a, b) => {
+    const parseDate = (f) => {
+      if (!f) return 0;
+      const parts = f.split('/');
+      if (parts.length === 3) return new Date(parts[2], parts[1] - 1, parts[0]).getTime();
+      return 0;
+    };
+    return parseDate(b.fecha) - parseDate(a.fecha);
+  });
+  container.innerHTML = sorted.map(c => {
     const estado = c.estado || '—';
     const estadoClass = estado === 'Sobrante' ? 'sobrante' : estado === 'Faltante' ? 'faltante' : estado === 'Exacto' ? 'exacto' : '';
     const devolucion = c.devolucion || 0;
