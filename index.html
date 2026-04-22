@@ -181,7 +181,6 @@
   </div>
   <div class="tabs">
     <div class="tab active" onclick="switchTab('nuevo', this)">Nuevo</div>
-    <div class="tab" onclick="switchTab('guardados', this)">Guardados <span class="badge" id="badge-count">0</span></div>
     <div class="tab" onclick="switchTab('cierres', this)">Cierres</div>
   </div>
 
@@ -216,11 +215,6 @@
     </div>
     <button class="btn btn-primary" onclick="iniciarEvento()">COMENZAR CARGA →</button>
     <button class="btn btn-secondary" style="margin-top:10px;" onclick="recargarEventos()">↻ Recargar eventos</button>
-  </div>
-
-  <!-- TAB GUARDADOS -->
-  <div id="tab-guardados" style="display:none;">
-    <div id="list-guardados"><div class="empty-state"><span class="emoji">📋</span>Todavía no hay eventos guardados.</div></div>
   </div>
 
   <!-- TAB CIERRES -->
@@ -398,7 +392,6 @@ let cierresCache = [];
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('home-fecha').value = new Date().toISOString().split('T')[0];
-  updateBadge();
   cargarEventos();
 });
 
@@ -691,9 +684,7 @@ function switchTab(tab, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('tab-nuevo').style.display = tab === 'nuevo' ? 'block' : 'none';
-  document.getElementById('tab-guardados').style.display = tab === 'guardados' ? 'block' : 'none';
   document.getElementById('tab-cierres').style.display = tab === 'cierres' ? 'block' : 'none';
-  if (tab === 'guardados') renderGuardados();
   if (tab === 'cierres') cargarCierres();
 }
 
@@ -972,7 +963,6 @@ async function enviarDatos() {
 
   btn.disabled = false;
   btn.innerHTML = '✓ CONFIRMAR Y ENVIAR';
-  updateBadge();
   showScreen('exito');
 }
 
@@ -981,33 +971,6 @@ async function enviarDatos() {
 // ══════════════════════════════════════════════════════
 function copiarTexto() {
   navigator.clipboard.writeText(document.getElementById('exito-texto').textContent).then(() => showToast('✓ Copiado'));
-}
-
-function renderGuardados() {
-  const saved = JSON.parse(localStorage.getItem('lf_eventos') || '[]');
-  const container = document.getElementById('list-guardados');
-  if (saved.length === 0) { container.innerHTML = '<div class="empty-state"><span class="emoji">📋</span>Todavía no hay eventos guardados.</div>'; return; }
-  container.innerHTML = saved.map(ev => {
-    const cierre = ev.cierre;
-    const cierreInfo = cierre && cierre.dineroRecibido > 0
-      ? `<div style="font-size:11px; margin-top:4px; color:${cierre.estado === 'Sobrante' ? 'var(--green)' : cierre.estado === 'Faltante' ? 'var(--red)' : 'var(--yellow)'};">${cierre.estado}: $${formatNum(Math.abs(cierre.devolucion))}</div>`
-      : '';
-    return `
-      <div class="saved-badge">
-        <div class="saved-badge-info">
-          <div class="saved-badge-nombre">${ev.evento}</div>
-          <div class="saved-badge-meta">${formatFecha(ev.fecha)} · ${ev.encargado} · ${ev.rows.length} empleados</div>
-          ${cierreInfo}
-        </div>
-        <div style="font-size:20px;">📋</div>
-      </div>
-    `;
-  }).join('');
-}
-
-function updateBadge() {
-  const saved = JSON.parse(localStorage.getItem('lf_eventos') || '[]');
-  document.getElementById('badge-count').textContent = saved.length;
 }
 
 function cancelarEvento() {
