@@ -159,7 +159,7 @@
   <div>
     <div class="header-brand">LA FONDIATTA</div>
     <div class="header-sub">REGISTRO DE PERSONAL</div>
-    <button class="version-btn" onclick="forzarRecarga()">v2.1 · Actualizar</button>
+    <button class="version-btn" onclick="forzarRecarga()">v2.2 · Actualizar</button>
   </div>
   <svg class="header-logo" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
     <line x1="40" y1="8" x2="40" y2="72" stroke="#E1D9C8" stroke-width="3" stroke-linecap="round"/>
@@ -375,6 +375,10 @@ let VIATICOS = { ...VIATICOS_FALLBACK };
 let datosEnVivo = false;
 let cierresCache = [];
 let esNuevoEmpleado = false;
+let enviandoEvento = false;
+
+// Normaliza texto para comparar (sin mayúsculas, sin acentos, sin espacios extra)
+function normalizar(txt) { return (txt || '').toString().toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('home-fecha').value = new Date().toISOString().split('T')[0];
@@ -612,6 +616,10 @@ function agregarEmpleado() {
     zona = ZONAS_EMPLEADOS[nombre] || 'Otras Zonas';
   }
 
+  // ── CANDADO 1: no permitir el mismo empleado dos veces en el mismo evento ──
+  const yaEnLista = empleadosCargados.some(e => normalizar(e.nombre) === normalizar(nombre));
+  if (yaEnLista) return showToast('⚠️ ' + nombre.split(' ')[0] + ' ya está en la lista');
+
   if (!funcion) return showToast('⚠️ Seleccioná la función');
   if (!horas) return showToast('⚠️ Seleccioná las horas');
   if (cargaDescState === 'Sí' && !hsCD) return showToast('⚠️ Ingresá las horas de C/D');
@@ -683,10 +691,20 @@ function calcularCierre() {
 
 // ── ENVIAR ──
 async function enviarDatos() {
+  // ── CANDADO 2a: evitar doble envío por doble clic ──
+  if (enviandoEvento) return;
+
+  // ── CANDADO 2b: avisar si el evento YA fue cerrado antes ──
+  const yaCerrado = cierresCache.some(c => normalizar(c.evento) === normalizar(currentEvento.evento));
+  if (yaCerrado) {
+    if (!confirm('⚠️ "' + currentEvento.evento + '" ya figura cerrado en la planilla.\n\nSi lo enviás de nuevo se va a DUPLICAR. ¿Querés enviarlo igual?')) return;
+  }
+
   const gastosExtras = parseFloat(document.getElementById('cierre-gastos').value) || 0;
   const dineroRecibido = parseFloat(document.getElementById('cierre-recibido').value) || 0;
   const cierreObs = document.getElementById('cierre-obs').value.trim();
   if (dineroRecibido === 0) { if (!confirm('No ingresaste el dinero recibido. ¿Querés enviar igual?')) return; }
+  enviandoEvento = true;
   const btn = document.getElementById('btn-enviar'); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Enviando...';
   const totalSueldos = empleadosCargados.reduce((a, e) => a + e.total, 0);
   const totalUtilizado = totalSueldos + gastosExtras;
@@ -702,6 +720,8 @@ async function enviarDatos() {
   localStorage.setItem('lf_eventos', JSON.stringify(saved.slice(0, 50)));
   try {
     await fetch(WEBHOOK_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    // Registrar el evento como cerrado para que un reenvío inmediato quede bloqueado por el Candado 2b
+    cierresCache.push({ evento: currentEvento.evento, fecha: currentEvento.fecha, encargado: currentEvento.encargado });
     document.getElementById('exito-msg').textContent = `${empleadosCargados.length} filas + cierre enviados a Google Sheets.`;
     document.getElementById('exito-texto-wrap').style.display = 'none';
     const estadoClass = diferencia > 0 ? 'sobrante' : diferencia < 0 ? 'faltante' : 'exacto';
@@ -715,6 +735,7 @@ async function enviarDatos() {
     document.getElementById('exito-texto-wrap').style.display = 'block';
     document.getElementById('exito-cierre-wrap').style.display = 'none';
   }
+  enviandoEvento = false;
   btn.disabled = false; btn.innerHTML = '✓ CONFIRMAR Y ENVIAR'; showScreen('exito');
 }
 
