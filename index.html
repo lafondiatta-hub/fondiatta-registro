@@ -159,7 +159,7 @@
   <div>
     <div class="header-brand">LA FONDIATTA</div>
     <div class="header-sub">REGISTRO DE PERSONAL</div>
-    <button class="version-btn" onclick="forzarRecarga()">v2.4 · Actualizar</button>
+    <button class="version-btn" onclick="forzarRecarga()">v2.5 · Actualizar</button>
   </div>
   <svg class="header-logo" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
     <line x1="40" y1="8" x2="40" y2="72" stroke="#E1D9C8" stroke-width="3" stroke-linecap="round"/>
@@ -214,12 +214,17 @@
   </div>
 
   <div id="tab-cierres" style="display:none;">
-    <div id="admin-bar" style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-      <button class="version-btn" id="btn-admin" onclick="toggleAdmin()">🔒 Administración</button>
-      <span id="admin-badge" style="display:none; font-size:10px; font-weight:700; letter-spacing:0.5px; color:var(--green);">● MODO ADMINISTRACIÓN</span>
-    </div>
-    <div id="cierres-loading" class="loading-eventos" style="display:none;"><span class="spinner"></span> Cargando cierres...</div>
-    <div id="list-cierres"><div class="empty-state"><span class="emoji">📊</span>Cargá los cierres para ver el historial.</div></div>
+    <label style="margin-top:0;">Ver cierres de</label>
+    <select id="cierres-vista" onchange="cambiarVistaCierres(this.value)">
+      <option value="">— Seleccioná —</option>
+      <option>Guillermina</option>
+      <option>Gaston</option>
+      <option>Camila</option>
+      <option>Denisse</option>
+      <option>Administración</option>
+    </select>
+    <div id="cierres-loading" class="loading-eventos" style="display:none; margin-top:12px;"><span class="spinner"></span> Cargando cierres...</div>
+    <div id="list-cierres" style="margin-top:14px;"><div class="empty-state"><span class="emoji">📊</span>Elegí un encargado para ver sus cierres.</div></div>
     <button class="btn btn-secondary" style="margin-top:10px;" onclick="recargarCierres()">↻ Actualizar cierres</button>
   </div>
 </div>
@@ -380,10 +385,9 @@ let datosEnVivo = false;
 let cierresCache = [];
 let esNuevoEmpleado = false;
 let enviandoEvento = false;
-let modoAdmin = false;
-let detallesCache = {};
-// ⚙️ Contraseña de Administración (cambiala por la que quieras). Solo controla quién ve el DETALLE de TODOS los cierres.
-const ADMIN_PASS = "FondiAdmin2026";
+let cierresVista = '';                      // encargado elegido en la pestaña Cierres
+let pinSesion = { usuario: '', pin: '' };   // PIN cacheado SOLO en memoria, durante la sesión
+let permisosCache = {};                     // nombre -> { verDetalle, alcance }  (NO contiene PINs)
 
 // Normaliza texto para comparar (sin mayúsculas, sin acentos, sin espacios extra)
 function normalizar(txt) { return (txt || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim(); }
@@ -408,6 +412,7 @@ async function cargarEventos() {
     if (data.zonas && Object.keys(data.zonas).length > 0) { ZONAS_EMPLEADOS = { ...ZONAS_FALLBACK, ...data.zonas }; datosEnVivo = true; }
     if (data.viaticos && Object.keys(data.viaticos).length > 0) { VIATICOS = { ...VIATICOS_FALLBACK, ...data.viaticos }; datosEnVivo = true; actualizarZonasSelect(); }
     if (data.cierres && data.cierres.length > 0) cierresCache = data.cierres;
+    if (data.permisos) permisosCache = data.permisos;
   } catch(e) {
     document.getElementById('eventos-loading').style.display = 'none';
     document.getElementById('eventos-error').style.display = 'block';
@@ -459,56 +464,67 @@ function onManualEvento(val) {
 }
 
 // ── CIERRES ──
+// Trae los RESÚMENES de cierres (sin el detalle por empleado).
+// El detalle por empleado NO viaja acá: se pide aparte, con PIN, en intentarVerDetalle().
+async function fetchResumenCierres() {
+  const res = await fetch(WEBHOOK_URL, { method: 'GET' });
+  const data = await res.json();
+  if (!data.ok || !data.cierres) throw new Error('Sin datos');
+  cierresCache = data.cierres;
+  if (data.permisos) permisosCache = data.permisos;
+  if (data.eventos) eventosCache = data.eventos;
+  if (data.zonas && Object.keys(data.zonas).length > 0) ZONAS_EMPLEADOS = { ...ZONAS_FALLBACK, ...data.zonas };
+  if (data.viaticos && Object.keys(data.viaticos).length > 0) VIATICOS = { ...VIATICOS_FALLBACK, ...data.viaticos };
+  return data;
+}
+
 async function cargarCierres() {
-  if (cierresCache.length > 0) { renderCierres(cierresCache); return; }
+  if (cierresCache.length > 0) { renderCierres(); return; }
   const loading = document.getElementById('cierres-loading');
-  const container = document.getElementById('list-cierres');
-  loading.style.display = 'block'; container.innerHTML = '';
-  try {
-    const res = await fetch(WEBHOOK_URL + (modoAdmin ? '?detalle=1' : ''), { method: 'GET' });
-    const data = await res.json();
-    if (!data.ok || !data.cierres) throw new Error('Sin datos');
-    cierresCache = data.cierres; if (data.detalles) detallesCache = data.detalles; loading.style.display = 'none'; renderCierres(data.cierres);
-  } catch(e) { loading.style.display = 'none'; container.innerHTML = '<div class="empty-state"><span class="emoji">⚠️</span>No se pudieron cargar los cierres.<br>Verificá tu conexión.</div>'; }
+  loading.style.display = 'block';
+  try { await fetchResumenCierres(); loading.style.display = 'none'; renderCierres(); }
+  catch(e) { loading.style.display = 'none'; document.getElementById('list-cierres').innerHTML = '<div class="empty-state"><span class="emoji">⚠️</span>No se pudieron cargar los cierres.<br>Verificá tu conexión.</div>'; }
 }
 
 async function recargarCierres() {
   cierresCache = [];
   const loading = document.getElementById('cierres-loading');
-  const container = document.getElementById('list-cierres');
-  loading.style.display = 'block'; container.innerHTML = ''; showToast('↻ Recargando cierres...');
-  try {
-    const res = await fetch(WEBHOOK_URL + (modoAdmin ? '?detalle=1' : ''), { method: 'GET' });
-    const data = await res.json();
-    if (!data.ok || !data.cierres) throw new Error('Sin datos');
-    cierresCache = data.cierres;
-    if (data.detalles) detallesCache = data.detalles;
-    if (data.eventos) eventosCache = data.eventos;
-    if (data.zonas && Object.keys(data.zonas).length > 0) ZONAS_EMPLEADOS = { ...ZONAS_FALLBACK, ...data.zonas };
-    if (data.viaticos && Object.keys(data.viaticos).length > 0) VIATICOS = { ...VIATICOS_FALLBACK, ...data.viaticos };
-    loading.style.display = 'none'; renderCierres(data.cierres);
-  } catch(e) { loading.style.display = 'none'; container.innerHTML = '<div class="empty-state"><span class="emoji">⚠️</span>No se pudieron cargar los cierres.<br>Verificá tu conexión.</div>'; }
+  loading.style.display = 'block';
+  document.getElementById('list-cierres').innerHTML = '';
+  showToast('↻ Recargando cierres...');
+  try { await fetchResumenCierres(); loading.style.display = 'none'; renderCierres(); }
+  catch(e) { loading.style.display = 'none'; document.getElementById('list-cierres').innerHTML = '<div class="empty-state"><span class="emoji">⚠️</span>No se pudieron cargar los cierres.<br>Verificá tu conexión.</div>'; }
 }
 
-function renderCierres(cierres) {
+// Cambiar el encargado cuyos cierres se muestran. Resetea el PIN cacheado.
+function cambiarVistaCierres(v) {
+  cierresVista = v;
+  pinSesion = { usuario: '', pin: '' };
+  if (!v) { document.getElementById('list-cierres').innerHTML = '<div class="empty-state"><span class="emoji">📊</span>Elegí un encargado para ver sus cierres.</div>'; return; }
+  if (cierresCache.length === 0) { cargarCierres(); return; }
+  renderCierres();
+}
+
+// Renderiza SOLO los eventos del encargado elegido (dueño desde REGISTRO). Admin ve todos.
+function renderCierres() {
   const container = document.getElementById('list-cierres');
-  if (!cierres || cierres.length === 0) { container.innerHTML = '<div class="empty-state"><span class="emoji">📊</span>No hay cierres registrados aún.</div>'; return; }
-  const saved = JSON.parse(localStorage.getItem('lf_eventos') || '[]');
-  const savedMap = {}; saved.forEach(ev => { const key = ev.evento.trim().toLowerCase(); if (!savedMap[key]) savedMap[key] = ev; });
-  const sorted = [...cierres].sort((a, b) => { const parseDate = (f) => { if (!f) return 0; const parts = f.split('/'); if (parts.length === 3) return new Date(parts[2], parts[1] - 1, parts[0]).getTime(); return 0; }; return parseDate(b.fecha) - parseDate(a.fecha); });
+  if (!cierresVista) { container.innerHTML = '<div class="empty-state"><span class="emoji">📊</span>Elegí un encargado para ver sus cierres.</div>'; return; }
+  const esAdmin = normalizar(cierresVista) === normalizar('Administración');
+  const vistaNorm = normalizar(cierresVista);
+  const lista = cierresCache.filter(c => esAdmin ? true : normalizar(c.owner || c.encargado || '') === vistaNorm);
+  if (!lista || lista.length === 0) { container.innerHTML = `<div class="empty-state"><span class="emoji">📊</span>No hay cierres para ${cierresVista}.</div>`; return; }
+  // ¿Este usuario puede abrir el detalle? Admin siempre; el resto según la solapa USUARIOS.
+  const puedeDetalle = esAdmin || (permisosCache[cierresVista] && permisosCache[cierresVista].verDetalle === true);
+  const sorted = [...lista].sort((a, b) => { const parseDate = (f) => { if (!f) return 0; const parts = f.split('/'); if (parts.length === 3) return new Date(parts[2], parts[1] - 1, parts[0]).getTime(); return 0; }; return parseDate(b.fecha) - parseDate(a.fecha); });
   container.innerHTML = sorted.map(c => {
     const estado = c.estado || '—';
     const estadoClass = estado === 'Sobrante' ? 'sobrante' : estado === 'Faltante' ? 'faltante' : estado === 'Exacto' ? 'exacto' : '';
     const devolucion = c.devolucion || 0;
-    const key = c.evento.trim().toLowerCase();
-    const normKey = normalizar(c.evento);
-    const tieneDetalleSheet = modoAdmin && detallesCache[normKey] && detallesCache[normKey].length > 0;
-    const tieneDetalleLocal = !!savedMap[key];
-    const tieneDetalle = tieneDetalleSheet || tieneDetalleLocal;
-    const onclickAttr = tieneDetalleSheet ? `onclick="verDetalleCierreSheet('${normKey.replace(/'/g, "\\'")}')"` : (tieneDetalleLocal ? `onclick="verDetalleCierre('${key.replace(/'/g, "\\'")}')"` : '');
-    return `<div class="cierre-hist-item ${tieneDetalle ? 'clickable' : ''}" ${onclickAttr}>
-        <div class="cierre-hist-evento">${c.evento} ${tieneDetalle ? '<span style="font-size:11px; color:var(--marron);">▸ Ver detalle</span>' : ''}</div>
-        <div class="cierre-hist-meta">${c.fecha || ''} · ${c.encargado || '—'}</div>
+    const evJS = (c.evento || '').replace(/'/g, "\\'");
+    const onclickAttr = puedeDetalle ? `onclick="intentarVerDetalle('${evJS}')"` : '';
+    return `<div class="cierre-hist-item ${puedeDetalle ? 'clickable' : ''}" ${onclickAttr}>
+        <div class="cierre-hist-evento">${c.evento} ${puedeDetalle ? '<span style="font-size:11px; color:var(--marron);">▸ Ver detalle</span>' : ''}</div>
+        <div class="cierre-hist-meta">${c.fecha || ''} · ${c.owner || c.encargado || '—'}</div>
         <div class="cierre-hist-grid">
           <div class="cierre-hist-cell"><div class="cierre-hist-cell-label">Sueldos</div><div class="cierre-hist-cell-value">$${formatNum(c.totalSueldos || 0)}</div></div>
           <div class="cierre-hist-cell"><div class="cierre-hist-cell-label">Gastos extras</div><div class="cierre-hist-cell-value">$${formatNum(c.gastosExtras || 0)}</div></div>
@@ -521,37 +537,39 @@ function renderCierres(cierres) {
   }).join('');
 }
 
-function verDetalleCierre(eventoKey) {
-  const saved = JSON.parse(localStorage.getItem('lf_eventos') || '[]');
-  const ev = saved.find(e => e.evento.trim().toLowerCase() === eventoKey);
-  if (!ev) return showToast('⚠️ No se encontró el detalle');
-  const container = document.getElementById('list-cierres');
-  const totalSueldos = ev.rows.reduce((a, r) => a + (r.total || 0), 0);
-  const cierre = ev.cierre || {};
-  container.innerHTML = `<button class="detalle-back" onclick="renderCierres(cierresCache)">← Volver a cierres</button>
-    <div class="resumen-evento"><div class="resumen-evento-nombre">${ev.evento}</div><div class="resumen-evento-meta">${formatFecha(ev.fecha)} · ${ev.encargado}</div>
-      ${ev.rows.map(r => `<div class="detalle-emp-row"><div><div class="detalle-emp-name">${r.empleado}</div><div class="detalle-emp-meta">${r.funcion} · ${r.horas}hs${r.cargaDesc === 'Sí' ? ` · C/D ${r.hsCD}hs` : ''}${r.obs ? ` · ${r.obs}` : ''}</div>${r.total ? `<div class="detalle-emp-meta">Horas: $${formatNum(r.subtotalHoras || 0)}${r.adicionalCD > 0 ? ` · C/D: $${formatNum(r.adicionalCD)}` : ''} · Viático (${r.zona || '—'}): $${formatNum(r.viatico || 0)}</div>` : ''}</div><div class="detalle-emp-total">${r.total ? '$' + formatNum(r.total) : '—'}</div></div>`).join('')}
-      <div style="border-top:2px solid var(--marron); margin-top:12px; padding-top:12px;">
-        <div class="cierre-linea"><span class="cierre-linea-label" style="font-weight:700; color:var(--chalk);">Total sueldos</span><span class="cierre-linea-valor" style="font-size:16px;">$${formatNum(totalSueldos)}</span></div>
-        ${cierre.gastosExtras > 0 ? `<div class="cierre-linea"><span class="cierre-linea-label">Gastos extras</span><span class="cierre-linea-valor">$${formatNum(cierre.gastosExtras)}</span></div>` : ''}
-        ${cierre.dineroRecibido > 0 ? `<div class="cierre-linea"><span class="cierre-linea-label">Dinero recibido</span><span class="cierre-linea-valor">$${formatNum(cierre.dineroRecibido)}</span></div>
-        <div class="cierre-sep"></div>
-        <div class="cierre-resultado ${cierre.estado === 'Sobrante' ? 'sobrante' : cierre.estado === 'Faltante' ? 'faltante' : 'exacto'}" style="margin-top:8px;"><div class="cierre-resultado-label">${(cierre.estado || '').toUpperCase()}</div><div class="cierre-resultado-valor">$${formatNum(Math.abs(cierre.devolucion || 0))}</div></div>` : ''}
-      </div></div>`;
-  window.scrollTo(0, 0);
+// Pide el detalle por empleado al servidor. El servidor valida PIN + permiso + dueño.
+async function intentarVerDetalle(evento) {
+  if (!cierresVista) return;
+  // Pedir PIN solo si no está cacheado para este usuario en esta sesión
+  if (pinSesion.usuario !== cierresVista || !pinSesion.pin) {
+    const pin = prompt('PIN de ' + cierresVista + ':');
+    if (pin === null) return;
+    pinSesion = { usuario: cierresVista, pin: (pin || '').trim() };
+  }
+  showToast('🔓 Verificando...');
+  try {
+    const res = await fetch(WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'detalle', usuario: cierresVista, pin: pinSesion.pin, evento: evento }) });
+    const data = await res.json();
+    if (!data.ok) {
+      // Si el PIN o el usuario están mal, lo limpiamos para que vuelva a pedirlo
+      if (data.error === 'pin' || data.error === 'usuario') pinSesion = { usuario: '', pin: '' };
+      const msgs = { pin: '⚠️ PIN incorrecto', usuario: '⚠️ Usuario no configurado en el sistema', permiso: '🔒 No tenés permiso para ver el detalle', ajeno: '🔒 Ese cierre no corresponde a tu usuario', vacio: 'Sin detalle para este evento' };
+      return showToast(msgs[data.error] || '⚠️ No se pudo abrir el detalle');
+    }
+    renderDetalleServidor(data);
+  } catch(e) { showToast('⚠️ Error de conexión'); }
 }
 
-// ── DETALLE DESDE EL SHEET (modo administración) ──
-function verDetalleCierreSheet(normKey) {
-  const rows = detallesCache[normKey];
-  if (!rows || rows.length === 0) return showToast('⚠️ Sin detalle para este evento');
-  const c = cierresCache.find(x => normalizar(x.evento) === normKey) || {};
+// Pinta el detalle que devolvió el servidor (ya autorizado).
+function renderDetalleServidor(data) {
+  const rows = data.detalle || [];
+  const c = cierresCache.find(x => normalizar(x.evento) === normalizar(data.evento)) || {};
   const container = document.getElementById('list-cierres');
   const totalSueldos = rows.reduce((a, r) => a + (r.total || 0), 0);
   const estado = c.estado || '';
   const estadoClass = estado === 'Sobrante' ? 'sobrante' : estado === 'Faltante' ? 'faltante' : estado === 'Exacto' ? 'exacto' : '';
-  container.innerHTML = `<button class="detalle-back" onclick="renderCierres(cierresCache)">← Volver a cierres</button>
-    <div class="resumen-evento"><div class="resumen-evento-nombre">${c.evento || ''}</div><div class="resumen-evento-meta">${c.fecha || ''} · ${c.encargado || '—'}</div>
+  container.innerHTML = `<button class="detalle-back" onclick="renderCierres()">← Volver a cierres</button>
+    <div class="resumen-evento"><div class="resumen-evento-nombre">${c.evento || data.evento}</div><div class="resumen-evento-meta">${c.fecha || ''} · ${data.owner || c.owner || c.encargado || '—'}</div>
       ${rows.map(r => `<div class="detalle-emp-row"><div><div class="detalle-emp-name">${r.empleado}</div><div class="detalle-emp-meta">${r.funcion} · ${r.horas}hs${r.cargaDesc === 'Sí' ? ` · C/D ${r.hsCD}hs` : ''}${r.obs ? ` · ${r.obs}` : ''}</div><div class="detalle-emp-meta">Horas: $${formatNum(r.subtotalHoras || 0)}${r.adicionalCD > 0 ? ` · C/D: $${formatNum(r.adicionalCD)}` : ''} · Viático (${r.zona || '—'}): $${formatNum(r.viatico || 0)}</div></div><div class="detalle-emp-total">$${formatNum(r.total || 0)}</div></div>`).join('')}
       <div style="border-top:2px solid var(--marron); margin-top:12px; padding-top:12px;">
         <div class="cierre-linea"><span class="cierre-linea-label" style="font-weight:700; color:var(--chalk);">Total sueldos</span><span class="cierre-linea-valor" style="font-size:16px;">$${formatNum(totalSueldos)}</span></div>
@@ -560,26 +578,6 @@ function verDetalleCierreSheet(normKey) {
         ${estadoClass ? `<div class="cierre-sep"></div><div class="cierre-resultado ${estadoClass}" style="margin-top:8px;"><div class="cierre-resultado-label">${estado.toUpperCase()}</div><div class="cierre-resultado-valor">$${formatNum(Math.abs(c.devolucion || 0))}</div></div>` : ''}
       </div></div>`;
   window.scrollTo(0, 0);
-}
-
-// ── MODO ADMINISTRACIÓN (Opción B: solo Administración ve el detalle de todos los cierres) ──
-function toggleAdmin() {
-  if (modoAdmin) {
-    modoAdmin = false; detallesCache = {};
-    document.getElementById('btn-admin').textContent = '🔒 Administración';
-    document.getElementById('admin-badge').style.display = 'none';
-    cierresCache = []; recargarCierres();
-    showToast('Saliste del modo administración');
-    return;
-  }
-  const pass = prompt('Contraseña de Administración:');
-  if (pass === null) return;
-  if (pass.trim() !== ADMIN_PASS) { showToast('⚠️ Contraseña incorrecta'); return; }
-  modoAdmin = true;
-  document.getElementById('btn-admin').textContent = '🔓 Salir de Administración';
-  document.getElementById('admin-badge').style.display = 'inline-block';
-  cierresCache = []; recargarCierres();
-  showToast('✓ Modo administración activado');
 }
 
 // ── NAVEGACIÓN ──
