@@ -159,7 +159,7 @@
   <div>
     <div class="header-brand">LA FONDIATTA</div>
     <div class="header-sub">REGISTRO DE PERSONAL</div>
-    <button class="version-btn" onclick="forzarRecarga()">v2.2 · Actualizar</button>
+    <button class="version-btn" onclick="forzarRecarga()">v2.3 · Actualizar</button>
   </div>
   <svg class="header-logo" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
     <line x1="40" y1="8" x2="40" y2="72" stroke="#E1D9C8" stroke-width="3" stroke-linecap="round"/>
@@ -214,6 +214,10 @@
   </div>
 
   <div id="tab-cierres" style="display:none;">
+    <div id="admin-bar" style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+      <button class="version-btn" id="btn-admin" onclick="toggleAdmin()">🔒 Administración</button>
+      <span id="admin-badge" style="display:none; font-size:10px; font-weight:700; letter-spacing:0.5px; color:var(--green);">● MODO ADMINISTRACIÓN</span>
+    </div>
     <div id="cierres-loading" class="loading-eventos" style="display:none;"><span class="spinner"></span> Cargando cierres...</div>
     <div id="list-cierres"><div class="empty-state"><span class="emoji">📊</span>Cargá los cierres para ver el historial.</div></div>
     <button class="btn btn-secondary" style="margin-top:10px;" onclick="recargarCierres()">↻ Actualizar cierres</button>
@@ -376,9 +380,13 @@ let datosEnVivo = false;
 let cierresCache = [];
 let esNuevoEmpleado = false;
 let enviandoEvento = false;
+let modoAdmin = false;
+let detallesCache = {};
+// ⚙️ Contraseña de Administración (cambiala por la que quieras). Solo controla quién ve el DETALLE de TODOS los cierres.
+const ADMIN_PASS = "FondiAdmin2026";
 
 // Normaliza texto para comparar (sin mayúsculas, sin acentos, sin espacios extra)
-function normalizar(txt) { return (txt || '').toString().toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+function normalizar(txt) { return (txt || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim(); }
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('home-fecha').value = new Date().toISOString().split('T')[0];
@@ -457,10 +465,10 @@ async function cargarCierres() {
   const container = document.getElementById('list-cierres');
   loading.style.display = 'block'; container.innerHTML = '';
   try {
-    const res = await fetch(WEBHOOK_URL, { method: 'GET' });
+    const res = await fetch(WEBHOOK_URL + (modoAdmin ? '?detalle=1' : ''), { method: 'GET' });
     const data = await res.json();
     if (!data.ok || !data.cierres) throw new Error('Sin datos');
-    cierresCache = data.cierres; loading.style.display = 'none'; renderCierres(data.cierres);
+    cierresCache = data.cierres; if (data.detalles) detallesCache = data.detalles; loading.style.display = 'none'; renderCierres(data.cierres);
   } catch(e) { loading.style.display = 'none'; container.innerHTML = '<div class="empty-state"><span class="emoji">⚠️</span>No se pudieron cargar los cierres.<br>Verificá tu conexión.</div>'; }
 }
 
@@ -470,10 +478,11 @@ async function recargarCierres() {
   const container = document.getElementById('list-cierres');
   loading.style.display = 'block'; container.innerHTML = ''; showToast('↻ Recargando cierres...');
   try {
-    const res = await fetch(WEBHOOK_URL, { method: 'GET' });
+    const res = await fetch(WEBHOOK_URL + (modoAdmin ? '?detalle=1' : ''), { method: 'GET' });
     const data = await res.json();
     if (!data.ok || !data.cierres) throw new Error('Sin datos');
     cierresCache = data.cierres;
+    if (data.detalles) detallesCache = data.detalles;
     if (data.eventos) eventosCache = data.eventos;
     if (data.zonas && Object.keys(data.zonas).length > 0) ZONAS_EMPLEADOS = { ...ZONAS_FALLBACK, ...data.zonas };
     if (data.viaticos && Object.keys(data.viaticos).length > 0) VIATICOS = { ...VIATICOS_FALLBACK, ...data.viaticos };
@@ -492,8 +501,12 @@ function renderCierres(cierres) {
     const estadoClass = estado === 'Sobrante' ? 'sobrante' : estado === 'Faltante' ? 'faltante' : estado === 'Exacto' ? 'exacto' : '';
     const devolucion = c.devolucion || 0;
     const key = c.evento.trim().toLowerCase();
-    const tieneDetalle = !!savedMap[key];
-    return `<div class="cierre-hist-item ${tieneDetalle ? 'clickable' : ''}" ${tieneDetalle ? `onclick="verDetalleCierre('${key.replace(/'/g, "\\'")}')"` : ''}>
+    const normKey = normalizar(c.evento);
+    const tieneDetalleSheet = modoAdmin && detallesCache[normKey] && detallesCache[normKey].length > 0;
+    const tieneDetalleLocal = !!savedMap[key];
+    const tieneDetalle = tieneDetalleSheet || tieneDetalleLocal;
+    const onclickAttr = tieneDetalleSheet ? `onclick="verDetalleCierreSheet('${normKey.replace(/'/g, "\\'")}')"` : (tieneDetalleLocal ? `onclick="verDetalleCierre('${key.replace(/'/g, "\\'")}')"` : '');
+    return `<div class="cierre-hist-item ${tieneDetalle ? 'clickable' : ''}" ${onclickAttr}>
         <div class="cierre-hist-evento">${c.evento} ${tieneDetalle ? '<span style="font-size:11px; color:var(--marron);">▸ Ver detalle</span>' : ''}</div>
         <div class="cierre-hist-meta">${c.fecha || ''} · ${c.encargado || '—'}</div>
         <div class="cierre-hist-grid">
@@ -526,6 +539,47 @@ function verDetalleCierre(eventoKey) {
         <div class="cierre-resultado ${cierre.estado === 'Sobrante' ? 'sobrante' : cierre.estado === 'Faltante' ? 'faltante' : 'exacto'}" style="margin-top:8px;"><div class="cierre-resultado-label">${(cierre.estado || '').toUpperCase()}</div><div class="cierre-resultado-valor">$${formatNum(Math.abs(cierre.devolucion || 0))}</div></div>` : ''}
       </div></div>`;
   window.scrollTo(0, 0);
+}
+
+// ── DETALLE DESDE EL SHEET (modo administración) ──
+function verDetalleCierreSheet(normKey) {
+  const rows = detallesCache[normKey];
+  if (!rows || rows.length === 0) return showToast('⚠️ Sin detalle para este evento');
+  const c = cierresCache.find(x => normalizar(x.evento) === normKey) || {};
+  const container = document.getElementById('list-cierres');
+  const totalSueldos = rows.reduce((a, r) => a + (r.total || 0), 0);
+  const estado = c.estado || '';
+  const estadoClass = estado === 'Sobrante' ? 'sobrante' : estado === 'Faltante' ? 'faltante' : estado === 'Exacto' ? 'exacto' : '';
+  container.innerHTML = `<button class="detalle-back" onclick="renderCierres(cierresCache)">← Volver a cierres</button>
+    <div class="resumen-evento"><div class="resumen-evento-nombre">${c.evento || ''}</div><div class="resumen-evento-meta">${c.fecha || ''} · ${c.encargado || '—'}</div>
+      ${rows.map(r => `<div class="detalle-emp-row"><div><div class="detalle-emp-name">${r.empleado}</div><div class="detalle-emp-meta">${r.funcion} · ${r.horas}hs${r.cargaDesc === 'Sí' ? ` · C/D ${r.hsCD}hs` : ''}${r.obs ? ` · ${r.obs}` : ''}</div><div class="detalle-emp-meta">Horas: $${formatNum(r.subtotalHoras || 0)}${r.adicionalCD > 0 ? ` · C/D: $${formatNum(r.adicionalCD)}` : ''} · Viático (${r.zona || '—'}): $${formatNum(r.viatico || 0)}</div></div><div class="detalle-emp-total">$${formatNum(r.total || 0)}</div></div>`).join('')}
+      <div style="border-top:2px solid var(--marron); margin-top:12px; padding-top:12px;">
+        <div class="cierre-linea"><span class="cierre-linea-label" style="font-weight:700; color:var(--chalk);">Total sueldos</span><span class="cierre-linea-valor" style="font-size:16px;">$${formatNum(totalSueldos)}</span></div>
+        ${c.gastosExtras > 0 ? `<div class="cierre-linea"><span class="cierre-linea-label">Gastos extras</span><span class="cierre-linea-valor">$${formatNum(c.gastosExtras)}</span></div>` : ''}
+        ${c.dineroRecibido > 0 ? `<div class="cierre-linea"><span class="cierre-linea-label">Dinero recibido</span><span class="cierre-linea-valor">$${formatNum(c.dineroRecibido)}</span></div>` : ''}
+        ${estadoClass ? `<div class="cierre-sep"></div><div class="cierre-resultado ${estadoClass}" style="margin-top:8px;"><div class="cierre-resultado-label">${estado.toUpperCase()}</div><div class="cierre-resultado-valor">$${formatNum(Math.abs(c.devolucion || 0))}</div></div>` : ''}
+      </div></div>`;
+  window.scrollTo(0, 0);
+}
+
+// ── MODO ADMINISTRACIÓN (Opción B: solo Administración ve el detalle de todos los cierres) ──
+function toggleAdmin() {
+  if (modoAdmin) {
+    modoAdmin = false; detallesCache = {};
+    document.getElementById('btn-admin').textContent = '🔒 Administración';
+    document.getElementById('admin-badge').style.display = 'none';
+    cierresCache = []; recargarCierres();
+    showToast('Saliste del modo administración');
+    return;
+  }
+  const pass = prompt('Contraseña de Administración:');
+  if (pass === null) return;
+  if (pass.trim() !== ADMIN_PASS) { showToast('⚠️ Contraseña incorrecta'); return; }
+  modoAdmin = true;
+  document.getElementById('btn-admin').textContent = '🔓 Salir de Administración';
+  document.getElementById('admin-badge').style.display = 'inline-block';
+  cierresCache = []; recargarCierres();
+  showToast('✓ Modo administración activado');
 }
 
 // ── NAVEGACIÓN ──
