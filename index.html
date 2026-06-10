@@ -505,6 +505,13 @@ function cambiarVistaCierres(v) {
   renderCierres();
 }
 
+// Busca el permiso de un encargado tolerando mayúsculas/acentos/espacios.
+function permisoDe(nombre) {
+  const n = normalizar(nombre);
+  for (const k in permisosCache) { if (normalizar(k) === n) return permisosCache[k]; }
+  return null;
+}
+
 // Renderiza SOLO los eventos del encargado elegido (dueño desde REGISTRO). Admin ve todos.
 function renderCierres() {
   const container = document.getElementById('list-cierres');
@@ -513,8 +520,10 @@ function renderCierres() {
   const vistaNorm = normalizar(cierresVista);
   const lista = cierresCache.filter(c => esAdmin ? true : normalizar(c.owner || c.encargado || '') === vistaNorm);
   if (!lista || lista.length === 0) { container.innerHTML = `<div class="empty-state"><span class="emoji">📊</span>No hay cierres para ${cierresVista}.</div>`; return; }
-  // ¿Este usuario puede abrir el detalle? Admin siempre; el resto según la solapa USUARIOS.
-  const puedeDetalle = esAdmin || (permisosCache[cierresVista] && permisosCache[cierresVista].verDetalle === true);
+  // ¿Este usuario puede abrir el detalle? Admin siempre. Si hay info de permisos la respetamos;
+  // si todavía no llegó (Apps Script viejo), mostramos el botón igual: el servidor valida el PIN y el dueño.
+  const p = permisoDe(cierresVista);
+  const puedeDetalle = esAdmin || (p ? p.verDetalle === true : true);
   const sorted = [...lista].sort((a, b) => { const parseDate = (f) => { if (!f) return 0; const parts = f.split('/'); if (parts.length === 3) return new Date(parts[2], parts[1] - 1, parts[0]).getTime(); return 0; }; return parseDate(b.fecha) - parseDate(a.fecha); });
   container.innerHTML = sorted.map(c => {
     const estado = c.estado || '—';
