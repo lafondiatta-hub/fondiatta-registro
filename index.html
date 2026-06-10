@@ -159,7 +159,7 @@
   <div>
     <div class="header-brand">LA FONDIATTA</div>
     <div class="header-sub">REGISTRO DE PERSONAL</div>
-    <button class="version-btn" onclick="forzarRecarga()">v2.3 · Actualizar</button>
+    <button class="version-btn" onclick="forzarRecarga()">v2.4 · Actualizar</button>
   </div>
   <svg class="header-logo" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
     <line x1="40" y1="8" x2="40" y2="72" stroke="#E1D9C8" stroke-width="3" stroke-linecap="round"/>
@@ -336,8 +336,8 @@
 
 <!-- ════════════════ PANTALLA ÉXITO ════════════════ -->
 <div class="screen" id="screen-exito">
-  <div class="success-icon">✅</div>
-  <div class="success-title">¡Enviado!</div>
+  <div class="success-icon" id="exito-icon">✅</div>
+  <div class="success-title" id="exito-title">¡Enviado!</div>
   <div class="success-sub" id="exito-msg"></div>
   <div id="exito-cierre-wrap" class="card" style="display:none;">
     <div class="card-title">Resumen del cierre</div>
@@ -345,7 +345,7 @@
   </div>
   <div id="exito-texto-wrap" style="display:none;">
     <div class="config-info">
-      <strong>Copiá este texto y pegalo en la planilla:</strong>
+      <strong id="exito-texto-titulo">Copiá este texto y pegalo en la planilla:</strong>
       <pre id="exito-texto" style="margin-top:8px; font-size:11px; color:var(--marron); white-space:pre-wrap; word-break:break-word; background:#1a1816; padding:10px; border-radius:4px;"></pre>
     </div>
     <button class="btn btn-secondary" style="margin-top:0;" onclick="copiarTexto()">📋 Copiar texto</button>
@@ -772,25 +772,68 @@ async function enviarDatos() {
   let saved = JSON.parse(localStorage.getItem('lf_eventos') || '[]');
   saved.unshift({ ...payload, savedAt: new Date().toISOString() });
   localStorage.setItem('lf_eventos', JSON.stringify(saved.slice(0, 50)));
+  const totalFilas = payload.rows.length;
   try {
-    await fetch(WEBHOOK_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    // Envío VERIFICADO: text/plain evita el "preflight" y permite LEER la respuesta del servidor
+    const res = await fetch(WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+    const resp = await res.json();
+    const escritas = (resp && typeof resp.filasEscritas === 'number') ? resp.filasEscritas : null;
     // Registrar el evento como cerrado para que un reenvío inmediato quede bloqueado por el Candado 2b
     cierresCache.push({ evento: currentEvento.evento, fecha: currentEvento.fecha, encargado: currentEvento.encargado });
-    document.getElementById('exito-msg').textContent = `${empleadosCargados.length} filas + cierre enviados a Google Sheets.`;
-    document.getElementById('exito-texto-wrap').style.display = 'none';
-    const estadoClass = diferencia > 0 ? 'sobrante' : diferencia < 0 ? 'faltante' : 'exacto';
-    const estadoLabel = diferencia > 0 ? 'SOBRANTE' : diferencia < 0 ? 'FALTANTE' : 'EXACTO';
-    document.getElementById('exito-cierre-detalle').innerHTML = `<div class="cierre-linea"><span class="cierre-linea-label">Total sueldos</span><span class="cierre-linea-valor">$${formatNum(totalSueldos)}</span></div><div class="cierre-linea"><span class="cierre-linea-label">Gastos extras</span><span class="cierre-linea-valor">$${formatNum(gastosExtras)}</span></div><div class="cierre-sep"></div><div class="cierre-linea"><span class="cierre-linea-label" style="color:var(--chalk); font-weight:700;">Total utilizado</span><span class="cierre-linea-valor" style="font-size:15px;">$${formatNum(totalUtilizado)}</span></div><div class="cierre-linea"><span class="cierre-linea-label">Dinero recibido</span><span class="cierre-linea-valor">$${formatNum(dineroRecibido)}</span></div><div class="cierre-resultado ${estadoClass}" style="margin-top:12px;"><div class="cierre-resultado-label">${estadoLabel}</div><div class="cierre-resultado-valor">$${formatNum(Math.abs(diferencia))}</div></div>${cierreObs ? `<div style="font-size:11px; color:var(--gris); margin-top:10px;">📝 ${cierreObs}</div>` : ''}`;
-    document.getElementById('exito-cierre-wrap').style.display = 'block';
+
+    if (resp && resp.ok && escritas === totalFilas) {
+      // ✅ ÉXITO CONFIRMADO: el servidor guardó todas
+      document.getElementById('exito-icon').textContent = '✅';
+      document.getElementById('exito-title').textContent = '¡Enviado!';
+      document.getElementById('exito-title').style.color = '';
+      document.getElementById('exito-msg').textContent = `✓ Se guardaron ${escritas} de ${totalFilas} filas en Google Sheets.`;
+      document.getElementById('exito-texto-wrap').style.display = 'none';
+      const estadoClass = diferencia > 0 ? 'sobrante' : diferencia < 0 ? 'faltante' : 'exacto';
+      const estadoLabel = diferencia > 0 ? 'SOBRANTE' : diferencia < 0 ? 'FALTANTE' : 'EXACTO';
+      document.getElementById('exito-cierre-detalle').innerHTML = `<div class="cierre-linea"><span class="cierre-linea-label">Total sueldos</span><span class="cierre-linea-valor">$${formatNum(totalSueldos)}</span></div><div class="cierre-linea"><span class="cierre-linea-label">Gastos extras</span><span class="cierre-linea-valor">$${formatNum(gastosExtras)}</span></div><div class="cierre-sep"></div><div class="cierre-linea"><span class="cierre-linea-label" style="color:var(--chalk); font-weight:700;">Total utilizado</span><span class="cierre-linea-valor" style="font-size:15px;">$${formatNum(totalUtilizado)}</span></div><div class="cierre-linea"><span class="cierre-linea-label">Dinero recibido</span><span class="cierre-linea-valor">$${formatNum(dineroRecibido)}</span></div><div class="cierre-resultado ${estadoClass}" style="margin-top:12px;"><div class="cierre-resultado-label">${estadoLabel}</div><div class="cierre-resultado-valor">$${formatNum(Math.abs(diferencia))}</div></div>${cierreObs ? `<div style="font-size:11px; color:var(--gris); margin-top:10px;">📝 ${cierreObs}</div>` : ''}`;
+      document.getElementById('exito-cierre-wrap').style.display = 'block';
+    } else {
+      // ⚠️ GUARDADO INCOMPLETO o rechazado por el servidor
+      mostrarEnvioIncompleto(payload, totalFilas, escritas, resp && resp.error);
+    }
   } catch(e) {
-    document.getElementById('exito-msg').textContent = 'No se pudo conectar. Copiá el texto de abajo para pegarlo manualmente.';
-    const lines = payload.rows.map(r => [r.fecha, r.evento, r.encargado, r.empleado, r.funcion, r.horas, r.cargaDesc, r.hsCD || '', r.obs || ''].join('\t'));
-    document.getElementById('exito-texto').textContent = 'Fecha\tEvento\tEncargado\tEmpleado\tFunción\tHoras\tC/D\tHs C/D\tObs\n' + lines.join('\n');
-    document.getElementById('exito-texto-wrap').style.display = 'block';
-    document.getElementById('exito-cierre-wrap').style.display = 'none';
+    // ⚠️ No se pudo CONFIRMAR (conexión/CORS). No afirmamos que falló: pedimos verificar antes de reenviar.
+    mostrarEnvioSinConfirmar(payload, totalFilas);
   }
   enviandoEvento = false;
   btn.disabled = false; btn.innerHTML = '✓ CONFIRMAR Y ENVIAR'; showScreen('exito');
+}
+
+// Genera el texto TSV (pegable en la planilla) a partir de un conjunto de filas
+function _textoFilas(rows) {
+  const lines = rows.map(r => [r.fecha, r.evento, r.encargado, r.empleado, r.funcion, r.horas, r.cargaDesc, r.hsCD || '', r.obs || ''].join('\t'));
+  return 'Fecha\tEvento\tEncargado\tEmpleado\tFunción\tHoras\tC/D\tHs C/D\tObs\n' + lines.join('\n');
+}
+
+// Estado: el servidor confirmó que NO guardó todas. Mostramos SOLO las que faltaron.
+function mostrarEnvioIncompleto(payload, total, escritas, errMsg) {
+  document.getElementById('exito-icon').textContent = '⚠️';
+  document.getElementById('exito-title').textContent = 'Guardado incompleto';
+  document.getElementById('exito-title').style.color = 'var(--red)';
+  const guardadas = (typeof escritas === 'number') ? escritas : '?';
+  document.getElementById('exito-msg').innerHTML = `Se guardaron <b>${guardadas} de ${total}</b> filas. ${errMsg ? '<br><span style="font-size:11px;">(' + errMsg + ')</span>' : ''}<br>Abajo están las que NO se guardaron: copialas y pasáselas a administración. <b>No reenvíes todo el evento</b> (se duplicaría).`;
+  document.getElementById('exito-cierre-wrap').style.display = 'none';
+  const faltantes = (typeof escritas === 'number') ? payload.rows.slice(escritas) : payload.rows;
+  document.getElementById('exito-texto-titulo').textContent = 'Empleados que NO se guardaron:';
+  document.getElementById('exito-texto').textContent = _textoFilas(faltantes);
+  document.getElementById('exito-texto-wrap').style.display = 'block';
+}
+
+// Estado: no pudimos leer la respuesta (conexión/CORS). Puede haberse guardado o no.
+function mostrarEnvioSinConfirmar(payload, total) {
+  document.getElementById('exito-icon').textContent = '⚠️';
+  document.getElementById('exito-title').textContent = 'No se pudo confirmar';
+  document.getElementById('exito-title').style.color = 'var(--yellow)';
+  document.getElementById('exito-msg').innerHTML = `No pudimos confirmar el guardado por un problema de conexión.<br><b>Antes de reenviar</b>, entrá a Cierres y fijate si "${payload.evento}" figura completo. Por las dudas, abajo tenés la lista para copiar.`;
+  document.getElementById('exito-cierre-wrap').style.display = 'none';
+  document.getElementById('exito-texto-titulo').textContent = 'Lista completa del evento (respaldo):';
+  document.getElementById('exito-texto').textContent = _textoFilas(payload.rows);
+  document.getElementById('exito-texto-wrap').style.display = 'block';
 }
 
 // ── UTILIDADES ──
