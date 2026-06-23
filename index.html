@@ -159,7 +159,7 @@
   <div>
     <div class="header-brand">LA FONDIATTA</div>
     <div class="header-sub">REGISTRO DE PERSONAL</div>
-    <button class="version-btn" onclick="forzarRecarga()">v2.6 · Actualizar</button>
+    <button class="version-btn" onclick="forzarRecarga()">v2.7 · Actualizar</button>
   </div>
   <svg class="header-logo" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
     <line x1="40" y1="8" x2="40" y2="72" stroke="#E1D9C8" stroke-width="3" stroke-linecap="round"/>
@@ -182,6 +182,12 @@
   </div>
 
   <div id="tab-nuevo">
+    <div id="borrador-banner" style="display:none; background:#2A2826; border:1px solid var(--yellow); border-radius:10px; padding:16px; margin-bottom:14px;">
+      <div style="font-size:12px; font-weight:700; color:var(--yellow); letter-spacing:0.5px; margin-bottom:6px;">⏳ TENÉS UNA CARGA SIN TERMINAR</div>
+      <div id="borrador-info" style="font-size:13px; color:var(--chalk); line-height:1.5; margin-bottom:12px;"></div>
+      <button class="btn btn-primary" style="margin-top:0;" onclick="continuarBorrador()">CONTINUAR CARGA →</button>
+      <button class="btn btn-danger" style="margin-top:8px;" onclick="descartarBorrador()">Descartar</button>
+    </div>
     <div class="card">
       <div class="card-title"><span class="step-badge">1</span> Datos del evento</div>
       <label>Encargado/a</label>
@@ -399,8 +405,76 @@ let permisosCache = {};                     // nombre -> { verDetalle, alcance }
 // Normaliza texto para comparar (sin mayúsculas, sin acentos, sin espacios extra)
 function normalizar(txt) { return (txt || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim(); }
 
+// ── BORRADOR (autoguardado anti-pérdida) ──
+// Guarda en el teléfono todo lo que el encargado va cargando. Si se cierra la app,
+// se va la señal o se apaga el celu, al volver a abrir está todo. Solo se borra cuando
+// el sheet CONFIRMA que guardó todas las filas (o si el encargado lo descarta a mano).
+const BORRADOR_KEY = 'lf_borrador';
+let cierreRestaurar = null;
+
+function guardarBorrador() {
+  // Sin evento o sin empleados no hay nada que proteger: limpiamos.
+  if (!currentEvento || !Array.isArray(empleadosCargados) || empleadosCargados.length === 0) { borrarBorrador(); return; }
+  try {
+    const g = document.getElementById('cierre-gastos');
+    const r = document.getElementById('cierre-recibido');
+    const o = document.getElementById('cierre-obs');
+    const borrador = {
+      currentEvento,
+      empleadosCargados,
+      cierre: { gastos: g ? g.value : '', recibido: r ? r.value : '', obs: o ? o.value : '' },
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem(BORRADOR_KEY, JSON.stringify(borrador));
+  } catch(e) {}
+}
+
+function leerBorrador() {
+  try {
+    const b = JSON.parse(localStorage.getItem(BORRADOR_KEY) || 'null');
+    if (b && b.currentEvento && Array.isArray(b.empleadosCargados) && b.empleadosCargados.length > 0) return b;
+  } catch(e) {}
+  return null;
+}
+
+function borrarBorrador() {
+  try { localStorage.removeItem(BORRADOR_KEY); } catch(e) {}
+}
+
+function mostrarBannerBorrador() {
+  const banner = document.getElementById('borrador-banner');
+  if (!banner) return;
+  const b = leerBorrador();
+  if (!b) { banner.style.display = 'none'; return; }
+  const cant = b.empleadosCargados.length;
+  const fechaTxt = formatFecha(b.currentEvento.fecha || '');
+  document.getElementById('borrador-info').innerHTML =
+    `<b>${b.currentEvento.evento}</b><br>${fechaTxt ? fechaTxt + ' · ' : ''}${b.currentEvento.encargado || ''} · ${cant} empleado${cant !== 1 ? 's' : ''} cargado${cant !== 1 ? 's' : ''}`;
+  banner.style.display = 'block';
+}
+
+function continuarBorrador() {
+  const b = leerBorrador();
+  if (!b) { mostrarBannerBorrador(); return; }
+  currentEvento = b.currentEvento;
+  empleadosCargados = b.empleadosCargados || [];
+  cierreRestaurar = b.cierre || null;
+  cargaDescState = 'No';
+  document.getElementById('carga-evento-label').textContent = currentEvento.evento.length > 40 ? currentEvento.evento.substring(0, 40) + '...' : currentEvento.evento.toUpperCase();
+  document.getElementById('live-badge').style.display = datosEnVivo ? 'inline-flex' : 'none';
+  renderEmpleados(); resetEmpForm(); showScreen('carga');
+}
+
+function descartarBorrador() {
+  if (!confirm('¿Descartar la carga sin terminar? No se puede recuperar.')) return;
+  borrarBorrador();
+  mostrarBannerBorrador();
+  showToast('Borrador descartado');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('home-fecha').value = new Date().toISOString().split('T')[0];
+  mostrarBannerBorrador();
   cargarEventos();
 });
 
@@ -702,11 +776,11 @@ function agregarEmpleado() {
   const total = subtotalHoras + adicionalCD + viatico;
 
   empleadosCargados.push({ nombre, funcion, horas: parseFloat(horas), cargaDesc: cargaDescState, hsCD: hsCD ? parseFloat(hsCD) : null, obs, zona, subtotalHoras, adicionalCD, viatico, total });
-  renderEmpleados(); resetEmpForm();
+  renderEmpleados(); resetEmpForm(); guardarBorrador();
   showToast(`✓ ${nombre.split(' ')[0]} agregado`);
 }
 
-function eliminarEmpleado(idx) { empleadosCargados.splice(idx, 1); renderEmpleados(); }
+function eliminarEmpleado(idx) { empleadosCargados.splice(idx, 1); renderEmpleados(); guardarBorrador(); }
 
 function renderEmpleados() {
   const container = document.getElementById('lista-empleados');
@@ -733,12 +807,21 @@ function irAResumen() {
       ${empleadosCargados.map(e => `<div class="resumen-empleado"><div><div class="resumen-empleado-info">${e.nombre}</div><div class="resumen-empleado-meta">${e.funcion} · ${e.horas}hs${e.cargaDesc === 'Sí' ? ` · C/D ${e.hsCD}hs` : ''}${e.obs ? ` · ${e.obs}` : ''}</div><div class="resumen-empleado-meta" style="margin-top:3px;">Horas: $${formatNum(e.subtotalHoras)}${e.adicionalCD > 0 ? ` · C/D: $${formatNum(e.adicionalCD)}` : ''} · Viático (${e.zona}): $${formatNum(e.viatico)}</div></div><div class="resumen-empleado-total">$${formatNum(e.total)}</div></div>`).join('')}
       <div style="border-top:1px solid var(--marron); margin-top:12px; padding-top:12px; display:flex; justify-content:space-between; align-items:center;"><div style="font-size:12px; font-weight:700; letter-spacing:1px; color:var(--beige);">TOTAL SUELDOS</div><div style="font-size:18px; font-weight:700; color:var(--beige);">$${formatNum(totalEvento)}</div></div></div>
     <div style="font-size:12px; color:var(--gris); text-align:center;">${empleadosCargados.length} empleado${empleadosCargados.length !== 1 ? 's' : ''}</div>`;
-  document.getElementById('cierre-gastos').value = ''; document.getElementById('cierre-recibido').value = '';
-  document.getElementById('cierre-obs').value = ''; document.getElementById('cierre-resultado-wrap').style.display = 'none';
+  if (cierreRestaurar) {
+    document.getElementById('cierre-gastos').value = cierreRestaurar.gastos || '';
+    document.getElementById('cierre-recibido').value = cierreRestaurar.recibido || '';
+    document.getElementById('cierre-obs').value = cierreRestaurar.obs || '';
+    cierreRestaurar = null;
+    calcularCierre();
+  } else {
+    document.getElementById('cierre-gastos').value = ''; document.getElementById('cierre-recibido').value = '';
+    document.getElementById('cierre-obs').value = ''; document.getElementById('cierre-resultado-wrap').style.display = 'none';
+  }
   showScreen('resumen');
 }
 
 function calcularCierre() {
+  guardarBorrador();
   const totalSueldos = empleadosCargados.reduce((a, e) => a + e.total, 0);
   const gastosExtras = parseFloat(document.getElementById('cierre-gastos').value) || 0;
   const dineroRecibido = parseFloat(document.getElementById('cierre-recibido').value) || 0;
@@ -799,7 +882,8 @@ async function enviarDatos() {
     cierresCache.push({ evento: currentEvento.evento, fecha: currentEvento.fecha, encargado: currentEvento.encargado });
 
     if (resp && resp.ok && escritas === totalFilas) {
-      // ✅ ÉXITO CONFIRMADO: el servidor guardó todas
+      // ✅ ÉXITO CONFIRMADO: el servidor guardó todas → recién acá borramos el borrador
+      borrarBorrador();
       document.getElementById('exito-icon').textContent = '✅';
       document.getElementById('exito-title').textContent = '¡Enviado!';
       document.getElementById('exito-title').style.color = '';
@@ -855,8 +939,8 @@ function mostrarEnvioSinConfirmar(payload, total) {
 
 // ── UTILIDADES ──
 function copiarTexto() { navigator.clipboard.writeText(document.getElementById('exito-texto').textContent).then(() => showToast('✓ Copiado')); }
-function cancelarEvento() { if (confirm('¿Cancelar la carga? Se perderán los datos.')) showScreen('home'); }
-function nuevoEvento() { currentEvento = null; empleadosCargados = []; eventoSeleccionado = null; document.getElementById('home-encargado').value = ''; document.getElementById('home-evento-select').value = ''; document.getElementById('home-evento-manual').value = ''; document.getElementById('evento-info-box').style.display = 'none'; document.getElementById('home-fecha').value = new Date().toISOString().split('T')[0]; showScreen('home'); cargarEventos(); }
+function cancelarEvento() { if (confirm('¿Cancelar la carga? Se perderán los datos.')) { borrarBorrador(); empleadosCargados = []; currentEvento = null; mostrarBannerBorrador(); showScreen('home'); } }
+function nuevoEvento() { currentEvento = null; empleadosCargados = []; eventoSeleccionado = null; document.getElementById('home-encargado').value = ''; document.getElementById('home-evento-select').value = ''; document.getElementById('home-evento-manual').value = ''; document.getElementById('evento-info-box').style.display = 'none'; document.getElementById('home-fecha').value = new Date().toISOString().split('T')[0]; mostrarBannerBorrador(); showScreen('home'); cargarEventos(); }
 function formatNum(n) { return Math.round(n).toLocaleString('es-AR'); }
 function formatFecha(dateStr) { if (!dateStr) return ''; const [y, m, d] = dateStr.split('-'); const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']; return `${parseInt(d)} ${meses[parseInt(m)-1]} ${y}`; }
 let toastTimer;
