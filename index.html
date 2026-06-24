@@ -159,7 +159,7 @@
   <div>
     <div class="header-brand">LA FONDIATTA</div>
     <div class="header-sub">REGISTRO DE PERSONAL</div>
-    <button class="version-btn" onclick="forzarRecarga()">v2.7 · Actualizar</button>
+    <button class="version-btn" onclick="forzarRecarga()">v2.8 · Actualizar</button>
   </div>
   <svg class="header-logo" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
     <line x1="40" y1="8" x2="40" y2="72" stroke="#E1D9C8" stroke-width="3" stroke-linecap="round"/>
@@ -378,7 +378,7 @@ const TARIFAS = {
   "Mozas Subencargado/a": 6500,
   "Parrillero": 6000,
   "Mozo": 5500,
-  "Mozo Esp": 5750,
+  "Mozo Esp": 6000,
   "Bartender": 6000
 };
 const TARIFA_CD = 5000;
@@ -775,7 +775,7 @@ function agregarEmpleado() {
   const viatico = VIATICOS[zona] !== undefined ? VIATICOS[zona] : (VIATICOS['Otras Zonas'] || 4000);
   const total = subtotalHoras + adicionalCD + viatico;
 
-  empleadosCargados.push({ nombre, funcion, horas: parseFloat(horas), cargaDesc: cargaDescState, hsCD: hsCD ? parseFloat(hsCD) : null, obs, zona, subtotalHoras, adicionalCD, viatico, total });
+  empleadosCargados.push({ nombre, funcion, horas: parseFloat(horas), cargaDesc: cargaDescState, hsCD: hsCD ? parseFloat(hsCD) : null, obs, zona, valorHora: tarifaHora, subtotalHoras, adicionalCD, viatico, total });
   renderEmpleados(); resetEmpForm(); guardarBorrador();
   showToast(`✓ ${nombre.split(' ')[0]} agregado`);
 }
@@ -867,7 +867,7 @@ async function enviarDatos() {
     fecha: currentEvento.fecha, evento: currentEvento.evento, encargado: currentEvento.encargado,
     timestamp: new Date().toISOString(),
     cierre: { gastosExtras, dineroRecibido, totalSueldos, totalUtilizado, devolucion: diferencia, estado: diferencia > 0 ? 'Sobrante' : diferencia < 0 ? 'Faltante' : 'Exacto', observaciones: cierreObs },
-    rows: empleadosCargados.map(e => ({ fecha: currentEvento.fecha, evento: currentEvento.evento, encargado: currentEvento.encargado, empleado: e.nombre, funcion: e.funcion, horas: e.horas, cargaDesc: e.cargaDesc, hsCD: e.hsCD, obs: e.obs, zona: e.zona, subtotalHoras: e.subtotalHoras, adicionalCD: e.adicionalCD, viatico: e.viatico, total: e.total }))
+    rows: empleadosCargados.map(e => ({ fecha: currentEvento.fecha, evento: currentEvento.evento, encargado: currentEvento.encargado, empleado: e.nombre, funcion: e.funcion, horas: e.horas, cargaDesc: e.cargaDesc, hsCD: e.hsCD, obs: e.obs, zona: e.zona, valorHora: e.valorHora, subtotalHoras: e.subtotalHoras, adicionalCD: e.adicionalCD, viatico: e.viatico, total: e.total }))
   };
   let saved = JSON.parse(localStorage.getItem('lf_eventos') || '[]');
   saved.unshift({ ...payload, savedAt: new Date().toISOString() });
